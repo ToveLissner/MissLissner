@@ -5,15 +5,18 @@ import { IUser } from "./src/models/IUser";
 import {
   createUser,
   deleteUser,
+  getAllGameAccounts,
   getAllUsers,
+  getGameAccountById,
   getUserById,
+  updateGameAccountBalance,
   updateUser,
 } from "./src/db/db";
 
 dotenv.config();
 
 const app: Application = express();
-const port = process.env.port || 4440;
+const port = process.env.PORT || 4440;
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
@@ -89,14 +92,54 @@ app.delete("/user/:id", async (req: Request, res: Response) => {
   }
 });
 
-const run = () => {
+// gameAccounts //
+
+app.get("/game-accounts", async (req: Request, res: Response) => {
   try {
-    app.listen(port, () => {
-      console.log(`Server is running on http://localhost:${port}`);
-    });
-  } catch (e) {
-    console.log(`Something went wrong ${e}`);
+    const gameAccounts = await getAllGameAccounts();
+    res.json(gameAccounts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
+});
+
+app.get("/game-accounts/:accountID", async (req: Request, res: Response) => {
+  const accountID = parseInt(req.params.accountID, 10);
+
+  try {
+    const gameAccount = await getGameAccountById(accountID);
+
+    if (gameAccount) {
+      res.json(gameAccount);
+    } else {
+      res.status(404).json({ error: "Game account not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/game-accounts/:accountID", async (req: Request, res: Response) => {
+  const accountID = parseInt(req.params.accountID, 10);
+  const newBalance = req.body.balance;
+
+  try {
+    await updateGameAccountBalance(accountID, newBalance);
+    res.json({ message: "Game account balance updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// server //
+
+const run = () => {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
 };
 
 run();
