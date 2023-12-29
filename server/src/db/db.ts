@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 import { IUser } from "../models/IUser";
 import { IGameAccount } from "../models/IGameAccount";
+import { IGameType } from "../models/IGameType";
 
 export const db = new sqlite3.Database("database");
 
@@ -172,6 +173,111 @@ export const updateGameAccountBalance = async (
 
   return new Promise<void>((resolve, reject) => {
     db.run(sql, values, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+// game_types //
+
+db.run(`CREATE TABLE IF NOT EXISTS game_types(
+  gameTypeID INTEGER PRIMARY KEY AUTOINCREMENT,
+  gameType VARCHAR(255) NOT NULL UNIQUE
+)`);
+
+export const createGameType = async (gameType: IGameType) => {
+  const isGameTypeTaken = await isGameTypeExist(gameType.gameType);
+
+  if (isGameTypeTaken) {
+    throw new Error("Game type already exists");
+  }
+
+  const sqlInsertGameType = `INSERT INTO game_types (gameType) VALUES (?)`;
+  const valuesInsertGameType = [gameType.gameType];
+
+  return new Promise<number>((resolve, reject) => {
+    db.run(sqlInsertGameType, valuesInsertGameType, function (error) {
+      if (error) {
+        reject(error);
+      } else {
+        const gameTypeID = this.lastID;
+        resolve(gameTypeID);
+      }
+    });
+  });
+};
+
+export const isGameTypeExist = async (gameType: string): Promise<boolean> => {
+  const sql = `SELECT COUNT(*) as count FROM game_types WHERE gameType = ?`;
+  const result = await new Promise<{ count: number }>((resolve, reject) => {
+    db.get(sql, [gameType], (error, row) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(row as { count: number });
+      }
+    });
+  });
+
+  return result.count > 0;
+};
+
+export const getAllGameTypes = async (): Promise<IGameType[]> => {
+  const sql = `SELECT * FROM game_types`;
+  return new Promise<IGameType[]>((resolve, reject) => {
+    db.all(sql, (error, rows: IGameType[]) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(rows || []);
+      }
+    });
+  });
+};
+
+export const getGameTypeByGameType = async (
+  gameType: string
+): Promise<IGameType | null> => {
+  const sql = `SELECT * FROM game_types WHERE gameType = ?`;
+
+  return new Promise<IGameType | null>((resolve, reject) => {
+    db.get(sql, [gameType], (error, gameType: IGameType | null) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(gameType);
+      }
+    });
+  });
+};
+
+export const updateGameType = async (
+  gameType: string,
+  updatedGameType: IGameType
+) => {
+  const sql = `UPDATE game_types SET gameType = ? WHERE gameType = ?`;
+  const values = [updatedGameType.gameType, gameType];
+
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, values, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+export const deleteGameType = async (gameType: string) => {
+  const sql = `DELETE FROM game_types WHERE gameType = ?`;
+
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, [gameType], (error) => {
       if (error) {
         reject(error);
       } else {
