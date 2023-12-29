@@ -1,4 +1,4 @@
 export interface IGameType {
-  gameTypeID: number;
+  gameTypeID?: number;
   gameType: string;
 }

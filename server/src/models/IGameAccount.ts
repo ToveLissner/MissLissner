@@ -1,5 +1,5 @@
 export interface IGameAccount {
-  accountID: number;
+  accountID?: number;
   balance: number;
   userID: number;
 }
