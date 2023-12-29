@@ -3,21 +3,27 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import { IUser } from "./src/models/IUser";
 import {
+  createGame,
   createGameType,
   createUser,
+  deleteGame,
   deleteGameType,
   deleteUser,
   getAllGameAccounts,
   getAllGameTypes,
+  getAllGames,
   getAllUsers,
   getGameAccountById,
+  getGameById,
   getGameTypeByGameType,
   getUserById,
+  updateGame,
   updateGameAccountBalance,
   updateGameType,
   updateUser,
 } from "./src/db/db";
 import { IGameType } from "./src/models/IGameType";
+import { IGame } from "./src/models/IGame";
 
 dotenv.config();
 
@@ -201,6 +207,72 @@ app.delete("/game-types/:gameType", async (req: Request, res: Response) => {
   try {
     await deleteGameType(gameType);
     res.json({ message: "Game type deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// games //
+
+app.post("/games", async (req: Request, res: Response) => {
+  const newGame = req.body as IGame;
+
+  try {
+    const gameID = await createGame(newGame);
+    res.json(`Game created successfully with ID: ${gameID}`);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ error: "Failed to create game" });
+  }
+});
+
+app.get("/games", async (req: Request, res: Response) => {
+  try {
+    const gameList = await getAllGames();
+    res.json(gameList);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/games/:id", async (req: Request, res: Response) => {
+  const gameId = parseInt(req.params.id, 10);
+
+  try {
+    const game = await getGameById(gameId);
+
+    if (game) {
+      res.json(game);
+    } else {
+      res.status(404).json({ error: "Game not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.put("/games/:id", async (req: Request, res: Response) => {
+  const gameId = parseInt(req.params.id, 10);
+  const updatedGame = req.body as IGame;
+
+  try {
+    await updateGame(gameId, updatedGame);
+    res.json({ message: "Game updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.delete("/games/:id", async (req: Request, res: Response) => {
+  const gameId = parseInt(req.params.id, 10);
+
+  try {
+    await deleteGame(gameId);
+    res.json({ message: "Game deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

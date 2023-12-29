@@ -2,6 +2,7 @@ import sqlite3 from "sqlite3";
 import { IUser } from "../models/IUser";
 import { IGameAccount } from "../models/IGameAccount";
 import { IGameType } from "../models/IGameType";
+import { IGame } from "../models/IGame";
 
 export const db = new sqlite3.Database("database");
 
@@ -278,6 +279,95 @@ export const deleteGameType = async (gameType: string) => {
 
   return new Promise<void>((resolve, reject) => {
     db.run(sql, [gameType], (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+// games //
+
+db.run(`CREATE TABLE IF NOT EXISTS games(
+  gameID INTEGER PRIMARY KEY AUTOINCREMENT,
+  price DECIMAL(10, 2) NOT NULL,
+  purchaseDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  gameTypeID INTEGER NOT NULL,
+  userID INTEGER NOT NULL,
+  FOREIGN KEY (gameTypeID) REFERENCES game_types (gameTypeID),
+  FOREIGN KEY (userID) REFERENCES users (userID)
+)`);
+
+export const createGame = async (game: IGame) => {
+  const sqlInsertGame = `INSERT INTO games (price, gameTypeID, userID) VALUES (?, ?, ?)`;
+  const valuesInsertGame = [game.price, game.gameTypeID, game.userID];
+
+  return new Promise<number>((resolve, reject) => {
+    db.run(sqlInsertGame, valuesInsertGame, function (error) {
+      if (error) {
+        reject(error);
+      } else {
+        const gameID = this.lastID;
+        resolve(gameID);
+      }
+    });
+  });
+};
+
+export const getAllGames = async (): Promise<IGame[]> => {
+  const sql = `SELECT * FROM games`;
+  return new Promise<IGame[]>((resolve, reject) => {
+    db.all(sql, (error, rows: IGame[]) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(rows || []);
+      }
+    });
+  });
+};
+
+export const getGameById = async (gameId: number): Promise<IGame | null> => {
+  const sql = `SELECT * FROM games WHERE gameID = ?`;
+
+  return new Promise<IGame | null>((resolve, reject) => {
+    db.get(sql, [gameId], (error, game: IGame | null) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(game);
+      }
+    });
+  });
+};
+
+export const updateGame = async (gameId: number, updatedGame: IGame) => {
+  const sql = `UPDATE games SET price = ?, gameTypeID = ?, userID = ? WHERE gameID = ?`;
+  const values = [
+    updatedGame.price,
+    updatedGame.gameTypeID,
+    updatedGame.userID,
+    gameId,
+  ];
+
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, values, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+export const deleteGame = async (gameId: number) => {
+  const sql = `DELETE FROM games WHERE gameID = ?`;
+
+  return new Promise<void>((resolve, reject) => {
+    db.run(sql, [gameId], (error) => {
       if (error) {
         reject(error);
       } else {
