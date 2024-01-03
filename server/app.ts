@@ -1,27 +1,22 @@
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import { IUser } from "./src/models/IUser";
 import {
   createGame,
   createGameType,
-  createUser,
   deleteGame,
   deleteGameType,
-  deleteUser,
   getAllGameAccounts,
   getAllGameTypes,
   getAllGames,
-  getAllUsers,
   getGameAccountById,
   getGameById,
   getGameTypeByGameType,
-  getUserById,
   updateGame,
   updateGameAccountBalance,
   updateGameType,
-  updateUser,
 } from "./src/db/db";
+import userRoutes from "./src/routes/userRoutes";
 import { IGameType } from "./src/models/IGameType";
 import { IGame } from "./src/models/IGame";
 
@@ -42,69 +37,7 @@ app.get("/", (req: Request, res: Response) => {
 
 // users //
 
-app.post("/users", async (req: Request, res: Response) => {
-  const newUser = req.body as IUser;
-
-  try {
-    await createUser(newUser);
-    res.json(`User created successfully`);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: "Failed to create user" });
-  }
-});
-
-app.get("/users", async (req: Request, res: Response) => {
-  try {
-    const userList = await getAllUsers();
-    res.json(userList);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.get("/users/:id", async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.id, 10);
-
-  try {
-    const user = await getUserById(userId);
-
-    if (user) {
-      res.json(user);
-    } else {
-      res.status(404).json({ error: "User not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.put("/users/:id", async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.id, 10);
-  const updatedUser = req.body as IUser;
-
-  try {
-    await updateUser(userId, updatedUser);
-    res.json({ message: "User updated successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.delete("/users/:id", async (req: Request, res: Response) => {
-  const userId = parseInt(req.params.id, 10);
-
-  try {
-    await deleteUser(userId);
-    res.json({ message: "User deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+app.use("/users", userRoutes);
 
 // gameAccounts //
 
