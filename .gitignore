@@ -7,6 +7,7 @@ yarn-error.log
 
 # Server dependencies
 /server/node_modules/
+/server/.env
 
 # Client dependencies
 # dependencies
