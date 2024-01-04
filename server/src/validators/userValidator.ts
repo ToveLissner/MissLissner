@@ -7,6 +7,6 @@ export const createUserValidator = [
     .withMessage("Username must be at least 3 characters long"),
   body("password")
     .trim()
-    .isLength({ min: 3 })
-    .withMessage("Password must be at least 3 characters long"),
+    .isLength({ min: 7 })
+    .withMessage("Password must be at least 7 characters long"),
 ];
