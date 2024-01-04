@@ -6,19 +6,17 @@ import {
   createGameType,
   deleteGame,
   deleteGameType,
-  getAllGameAccounts,
   getAllGameTypes,
   getAllGames,
-  getGameAccountById,
   getGameById,
   getGameTypeByGameType,
   updateGame,
-  updateGameAccountBalance,
   updateGameType,
 } from "./src/db/db";
 import userRoutes from "./src/routes/userRoutes";
 import { IGameType } from "./src/models/IGameType";
 import { IGame } from "./src/models/IGame";
+import gameAccountRoutes from "./src/routes/gameAccountRoutes";
 
 dotenv.config();
 
@@ -41,45 +39,7 @@ app.use("/users", userRoutes);
 
 // gameAccounts //
 
-app.get("/game-accounts", async (req: Request, res: Response) => {
-  try {
-    const gameAccounts = await getAllGameAccounts();
-    res.json(gameAccounts);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.get("/game-accounts/:id", async (req: Request, res: Response) => {
-  const accountId = parseInt(req.params.id, 10);
-
-  try {
-    const gameAccount = await getGameAccountById(accountId);
-
-    if (gameAccount) {
-      res.json(gameAccount);
-    } else {
-      res.status(404).json({ error: "Game account not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.put("/game-accounts/:id", async (req: Request, res: Response) => {
-  const accountId = parseInt(req.params.id, 10);
-  const newBalance = req.body.balance;
-
-  try {
-    await updateGameAccountBalance(accountId, newBalance);
-    res.json({ message: "Game account balance updated successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+app.use("/game-accounts", gameAccountRoutes);
 
 // gameTypes //
 
