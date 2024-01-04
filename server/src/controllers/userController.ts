@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { validationResult } from "express-validator";
 import {
   createUser,
   getAllUsers,
@@ -9,6 +10,10 @@ import {
 import { IUser } from "../models/IUser";
 
 export const createUserController = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   try {
     const newUser = req.body as IUser;
     await createUser(newUser);

@@ -9,11 +9,13 @@ import {
   deleteUserController,
 } from "../controllers/userController";
 
+import { createUserValidator } from "../validators/userValidator";
+
 const router: Router = express.Router();
 
 router.use(bodyParser.json());
 
-router.post("/", createUserController);
+router.post("/", createUserValidator, createUserController);
 router.get("/", getAllUsersController);
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
