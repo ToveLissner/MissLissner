@@ -3,20 +3,15 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import {
   createGame,
-  createGameType,
   deleteGame,
-  deleteGameType,
-  getAllGameTypes,
   getAllGames,
   getGameById,
-  getGameTypeByGameType,
   updateGame,
-  updateGameType,
 } from "./src/db/db";
 import userRoutes from "./src/routes/userRoutes";
-import { IGameType } from "./src/models/IGameType";
 import { IGame } from "./src/models/IGame";
 import gameAccountRoutes from "./src/routes/gameAccountRoutes";
+import gameTypeRoutes from "./src/routes/gameTypeRoutes";
 
 dotenv.config();
 
@@ -43,68 +38,7 @@ app.use("/game-accounts", gameAccountRoutes);
 
 // gameTypes //
 
-app.post("/game-types", async (req: Request, res: Response) => {
-  const newGameType = req.body as IGameType;
-  try {
-    const gameTypeID = await createGameType(newGameType);
-    res.json(`Game type created successfully with ID: ${gameTypeID}`);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ error: "Failed to create game type" });
-  }
-});
-
-app.get("/game-types", async (req: Request, res: Response) => {
-  try {
-    const gameTypes = await getAllGameTypes();
-    res.json(gameTypes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.get("/game-types/:gameType", async (req: Request, res: Response) => {
-  const gameType = req.params.gameType;
-
-  try {
-    const retrievedGameType = await getGameTypeByGameType(gameType);
-
-    if (retrievedGameType) {
-      res.json(retrievedGameType);
-    } else {
-      res.status(404).json({ error: "Game type not found" });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.put("/game-types/:gameType", async (req: Request, res: Response) => {
-  const gameType = req.params.gameType;
-  const updatedGameType = req.body as IGameType;
-
-  try {
-    await updateGameType(gameType, updatedGameType);
-    res.json({ message: "Game type updated successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-app.delete("/game-types/:gameType", async (req: Request, res: Response) => {
-  const gameType = req.params.gameType;
-
-  try {
-    await deleteGameType(gameType);
-    res.json({ message: "Game type deleted successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+app.use("/game-types", gameTypeRoutes);
 
 // games //
 
