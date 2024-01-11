@@ -3,6 +3,7 @@ import { IUser } from "../models/IUser";
 import { IGameAccount } from "../models/IGameAccount";
 import { IGameType } from "../models/IGameType";
 import { IGame } from "../models/IGame";
+import bcrypt from "bcrypt";
 
 export const db = new sqlite3.Database("database");
 
@@ -16,37 +17,51 @@ db.run(`CREATE TABLE IF NOT EXISTS users(
 )`);
 
 export const createUser = async (user: IUser) => {
-  const isTaken = await isUsernameTaken(user.username);
+  try {
+    // Start a transaction
+    db.exec("BEGIN TRANSACTION");
 
-  if (isTaken) {
-    throw new Error("Username is already taken");
-  }
+    // Check if the username is already taken
+    const isTaken = await isUsernameTaken(user.username);
+    if (isTaken) {
+      throw new Error("Username is already taken");
+    }
 
-  const sqlInsertUser = `INSERT INTO users (username, password) VALUES (?,?)`;
-  const valuesInsertUser = [user.username, user.password];
+    let userID: number;
 
-  return new Promise<number>((resolve, reject) => {
+    // Insert user into the 'users' table
+    const sqlInsertUser = `INSERT INTO users (username, password) VALUES (?, ?)`;
+    const valuesInsertUser = [user.username, user.password];
     db.run(sqlInsertUser, valuesInsertUser, function (error) {
       if (error) {
-        reject(error);
-      } else {
-        // Use the lastID property to get the ID of the inserted user
-        const userID = this.lastID;
-
-        // Now, create a game_account for the user
-        const sqlInsertGameAccount = `INSERT INTO game_accounts (balance, userID) VALUES (?, ?)`;
-        const valuesInsertGameAccount = [0, userID];
-
-        db.run(sqlInsertGameAccount, valuesInsertGameAccount, function (error) {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(userID);
-          }
-        });
+        // Rollback the transaction in case of an error
+        db.exec("ROLLBACK");
+        throw error;
       }
+
+      // Use the lastID property to get the ID of the inserted user
+      const userID = this.lastID;
+
+      // Insert a game_account for the user
+      const sqlInsertGameAccount = `INSERT INTO game_accounts (balance, userID) VALUES (?, ?)`;
+      const valuesInsertGameAccount = [0, userID];
+      db.run(sqlInsertGameAccount, valuesInsertGameAccount, function (error) {
+        if (error) {
+          // Rollback the transaction in case of an error
+          db.exec("ROLLBACK");
+          throw error;
+        }
+
+        // Commit the transaction
+        db.exec("COMMIT");
+      });
     });
-  });
+
+    return userID!;
+  } catch (error: any) {
+    // Explicitly type 'error' as 'Error'
+    throw new Error(`Failed to create user: ${(error as Error).message}`);
+  }
 };
 
 export const isUsernameTaken = async (username: string): Promise<boolean> => {
@@ -82,6 +97,22 @@ export const getUserById = async (userID: number): Promise<IUser | null> => {
 
   return new Promise<IUser | null>((resolve, reject) => {
     db.get(sql, [userID], (error, user: IUser | null) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(user);
+      }
+    });
+  });
+};
+
+export const getUserByUsername = async (
+  username: string
+): Promise<IUser | null> => {
+  const sql = `SELECT * FROM users WHERE username = ?`;
+
+  return new Promise<IUser | null>((resolve, reject) => {
+    db.get(sql, [username], (error, user: IUser | null) => {
       if (error) {
         reject(error);
       } else {
@@ -375,4 +406,34 @@ export const deleteGame = async (gameId: number) => {
       }
     });
   });
+};
+
+// ska detta verkligen ligga i denna fil??? //
+
+// kontrollera användare och lösenord //
+
+export const verifyPassword = async (
+  inputPassword: string,
+  storedPassword: string
+): Promise<boolean> => {
+  try {
+    return inputPassword === storedPassword;
+  } catch (error) {
+    throw new Error(`Error verifying password: ${error}`);
+  }
+};
+
+export const verifyUser = async (
+  username: string,
+  password: string
+): Promise<boolean> => {
+  const user = await getUserByUsername(username);
+
+  if (!user) {
+    return false;
+  }
+
+  const isPasswordValid = await verifyPassword(password, user.password);
+
+  return isPasswordValid;
 };

@@ -5,6 +5,7 @@ import userRoutes from "./src/routes/userRoutes";
 import gameAccountRoutes from "./src/routes/gameAccountRoutes";
 import gameTypeRoutes from "./src/routes/gameTypeRoutes";
 import gameRoutes from "./src/routes/gameRoutes";
+import authRoutes from "./src/routes/authRoutes";
 
 dotenv.config();
 
@@ -24,6 +25,10 @@ app.get("/", (req: Request, res: Response) => {
 // users //
 
 app.use("/users", userRoutes);
+
+// logIn //
+
+app.use("/auth", authRoutes);
 
 // gameAccounts //
 
