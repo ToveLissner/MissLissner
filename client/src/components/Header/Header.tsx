@@ -1,11 +1,17 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useSelector } from "react-redux";
+import SignUp from "../SignUp/SignUp";
 import User from "../User/User";
 import colors from "../../ui-toolkit/colors";
-// import SignUp from "../SignUp";
+import { RootState } from "../../domain/store";
 
 const Header: React.FC = () => {
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.user.data.isLoggedIn
+  );
+
   return (
     <AppBar
       position="static"
@@ -18,7 +24,7 @@ const Header: React.FC = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           MissLissner
         </Typography>
-        {/* <SignUp /> */}
+        {!isLoggedIn && <SignUp />}
         <User />
       </Toolbar>
     </AppBar>
