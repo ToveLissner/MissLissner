@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import LogInModal from "./LogInModal";
 import { Avatar, Menu, MenuItem, Typography, Box } from "@mui/material";
-import { selectUserData } from "../../domain/user/userSlice";
+import { User as UserType } from "../../models/User";
 import LogOutButton from "./LogOutButton";
 
 const User: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const userData = useSelector(selectUserData);
+  const userData = useSelector(
+    (state: { user: { data: UserType } }) => state.user.data
+  );
   console.log(userData);
   const isLoggedIn = userData.isLoggedIn;
 
