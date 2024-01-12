@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import cors from "cors";
 import userRoutes from "./src/routes/userRoutes";
 import gameAccountRoutes from "./src/routes/gameAccountRoutes";
 import gameTypeRoutes from "./src/routes/gameTypeRoutes";
@@ -11,6 +12,9 @@ dotenv.config();
 
 const app: Application = express();
 const port = process.env.PORT || 4440;
+
+app.use(cors());
+
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
