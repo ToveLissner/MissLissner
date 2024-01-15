@@ -1,6 +1,7 @@
-import React from "react";
-import { TextField } from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
+import { createUser } from "../../services/userService";
 
 type SignUpModalProps = {
   open: boolean;
@@ -8,13 +9,47 @@ type SignUpModalProps = {
 };
 
 const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleInputUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+    setError("");
+  };
+
+  const handleInputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+    setError("");
+  };
+
   const handleConfirm = (data: any) => {
     console.log("SignUpModal confirmed with data:", data);
   };
 
-  const handleCustomButtonClick = () => {
-    // Lägg till önskad logik när du klickar på den anpassade knappen
-    console.log("Custom button clicked in SignUpModal");
+  const handleCustomButtonClick = async () => {
+    try {
+      if (username.length < 3) {
+        setError("Användarnamnet måste vara minst 3 tecken långt.");
+        return;
+      }
+
+      if (password.length < 7) {
+        setError("Lösenordet måste vara minst 7 tecken långt.");
+        return;
+      }
+      await createUser(username, password);
+
+      onClose();
+    } catch (error: any) {
+      if (error.message === "Användarnamnet är redan taget") {
+        setError(
+          "Användarnamnet är upptaget. Var vänlig välj ett annat användarnamn."
+        );
+      } else {
+        console.error("Failed to create user:", error);
+      }
+    }
   };
 
   return (
@@ -28,16 +63,25 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
           <TextField
             label="Användarnamn"
             variant="outlined"
+            value={username}
+            onChange={handleInputUsername}
             fullWidth
             margin="normal"
           />
           <TextField
             label="Lösenord"
             variant="outlined"
+            value={password}
+            onChange={handleInputPassword}
             fullWidth
             type="password"
             margin="normal"
           />
+          {error && (
+            <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+              {error}
+            </Typography>
+          )}
         </>
       }
       buttonText="Skapa konto"
@@ -47,91 +91,3 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 };
 
 export default SignUpModal;
-
-// import React, { useState } from "react";
-// import { Modal, Box, TextField, Button } from "@mui/material";
-// // import { createUser } from "../../services/userService";
-// import ModalHeader from "../../ui-toolkit/components/ModalHeader";
-
-// type SignUpModalProps = {
-//   open: boolean;
-//   onClose: () => void;
-// };
-
-// const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
-//   const [username, setUsername] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleInputUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setUsername(event.target.value);
-//   };
-
-//   const handleInputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     setPassword(event.target.value);
-//   };
-
-//   const handleCreateUser = async () => {
-//     try {
-//       // Anropa userService för att skapa användaren
-//       //   await createUser({ username, password });
-//       console.log("Du tryckte, men ej registrerad än");
-//       // Stäng modalen efter att användaren har skapats
-//       onClose();
-//     } catch (error) {
-//       console.error("Failed to create user:", error);
-//     }
-//   };
-
-//   return (
-//     <Modal
-//       open={open}
-//       onClose={onClose}
-//       aria-labelledby="simple-modal-title"
-//       aria-describedby="simple-modal-description"
-//     >
-//       <Box
-//         sx={{
-//           position: "absolute",
-//           top: "50%",
-//           left: "50%",
-//           transform: "translate(-50%, -50%)",
-//           width: "300px",
-//           bgcolor: "white",
-//           boxShadow: 3,
-//           borderRadius: "8px",
-//           p: 4,
-//         }}
-//       >
-//         <ModalHeader title="Skapa användare" onClose={onClose} />
-
-//         <TextField
-//           label="Användarnamn"
-//           variant="outlined"
-//           fullWidth
-//           value={username}
-//           onChange={handleInputUsername}
-//           margin="normal"
-//         />
-//         <TextField
-//           label="Lösenord"
-//           variant="outlined"
-//           fullWidth
-//           type="password"
-//           value={password}
-//           onChange={handleInputPassword}
-//           margin="normal"
-//         />
-//         <Button
-//           variant="contained"
-//           color="primary"
-//           onClick={handleCreateUser}
-//           sx={{ mt: 2 }}
-//         >
-//           Skapa användare
-//         </Button>
-//       </Box>
-//     </Modal>
-//   );
-// };
-
-// export default SignUpModal;
