@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { TextField, Typography, Snackbar, Alert } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
+import CustomSnackbar from "../../ui-toolkit/components/CustomSnackbar";
 import { createUser } from "../../services/userService";
 
 type SignUpModalProps = {
@@ -13,6 +14,10 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const handleInputUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -37,6 +42,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
       }
       await createUser(username, password);
 
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Användaren har skapats framgångsrikt!");
       setSnackbarOpen(true);
 
       onClose();
@@ -45,6 +52,9 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         setError(
           "Användarnamnet är upptaget. Var vänlig välj ett annat användarnamn."
         );
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Användarnamnet är upptaget.");
+        setSnackbarOpen(true);
       } else {
         console.error("Failed to create user:", error);
       }
@@ -91,19 +101,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         buttonText="Skapa konto"
         onButtonClick={handleCustomButtonClick}
       />
-      <Snackbar
+      <CustomSnackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
         onClose={handleSnackbarClose}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Användaren har skapats!{" "}
-        </Alert>
-      </Snackbar>
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </>
   );
 };
