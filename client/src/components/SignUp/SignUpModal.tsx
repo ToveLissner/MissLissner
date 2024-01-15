@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Typography } from "@mui/material";
+import { TextField, Typography, Snackbar, Alert } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { createUser } from "../../services/userService";
 
@@ -12,6 +12,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleInputUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -21,10 +22,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const handleInputPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
     setError("");
-  };
-
-  const handleConfirm = (data: any) => {
-    console.log("SignUpModal confirmed with data:", data);
   };
 
   const handleCustomButtonClick = async () => {
@@ -40,6 +37,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
       }
       await createUser(username, password);
 
+      setSnackbarOpen(true);
+
       onClose();
     } catch (error: any) {
       if (error.message === "Användarnamnet är redan taget") {
@@ -52,41 +51,60 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
     }
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
-    <CustomModal
-      open={open}
-      onClose={onClose}
-      onConfirm={handleConfirm}
-      title="Skapa användare"
-      content={
-        <>
-          <TextField
-            label="Användarnamn"
-            variant="outlined"
-            value={username}
-            onChange={handleInputUsername}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Lösenord"
-            variant="outlined"
-            value={password}
-            onChange={handleInputPassword}
-            fullWidth
-            type="password"
-            margin="normal"
-          />
-          {error && (
-            <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-              {error}
-            </Typography>
-          )}
-        </>
-      }
-      buttonText="Skapa konto"
-      onButtonClick={handleCustomButtonClick}
-    />
+    <>
+      <CustomModal
+        open={open}
+        onClose={onClose}
+        onConfirm={() => {}}
+        title="Skapa användare"
+        content={
+          <>
+            <TextField
+              label="Användarnamn"
+              variant="outlined"
+              value={username}
+              onChange={handleInputUsername}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Lösenord"
+              variant="outlined"
+              value={password}
+              onChange={handleInputPassword}
+              fullWidth
+              type="password"
+              margin="normal"
+            />
+            {error && (
+              <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+                {error}
+              </Typography>
+            )}
+          </>
+        }
+        buttonText="Skapa konto"
+        onButtonClick={handleCustomButtonClick}
+      />
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Användaren har skapats!{" "}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 
