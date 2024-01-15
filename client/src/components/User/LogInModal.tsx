@@ -61,10 +61,12 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         setSnackbarSeverity("success");
         setSnackbarMessage("Inloggningen lyckades!");
         setSnackbarOpen(true);
+        setPassword("");
       }
     } catch (error) {
       console.error("Failed to log in:", error);
       setError("Fel vid inloggning.");
+      setPassword("");
     }
   };
 
