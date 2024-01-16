@@ -56,23 +56,19 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
       await dispatch(loginAction);
 
       console.log("Efter dispatch");
-
-      if (error === "") {
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Inloggningen lyckades!");
-        setSnackbarOpen(true);
-        setPassword("");
-      }
     } catch (error) {
       console.error("Failed to log in:", error);
       setError("Fel vid inloggning.");
-      setPassword("");
     }
   };
 
   useEffect(() => {
     if (isLoggedIn) {
+      setError("");
       onClose();
+      setSnackbarSeverity("success");
+      setSnackbarMessage("Inloggningen lyckades!");
+      setSnackbarOpen(true);
     }
   }, [isLoggedIn, onClose]);
 
