@@ -6,6 +6,7 @@ import {
   getUserById,
   updateUser,
   deleteUser,
+  getGameAccountByUserId,
 } from "../db/db";
 import { IUser } from "../models/IUser";
 
@@ -70,6 +71,30 @@ export const deleteUserController = async (req: Request, res: Response) => {
   try {
     await deleteUser(userId);
     res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getUserInfoController = async (req: Request, res: Response) => {
+  const userId = parseInt(req.params.id, 10);
+
+  try {
+    const user = await getUserById(userId);
+
+    if (user) {
+      const gameAccount = await getGameAccountByUserId(userId);
+
+      const userData = {
+        user,
+        gameAccount,
+      };
+
+      res.json(userData);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });

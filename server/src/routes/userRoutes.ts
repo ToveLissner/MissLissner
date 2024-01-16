@@ -7,6 +7,7 @@ import {
   getUserByIdController,
   updateUserController,
   deleteUserController,
+  getUserInfoController,
 } from "../controllers/userController";
 
 import { createUserValidator } from "../validators/userValidator";
@@ -20,5 +21,7 @@ router.get("/", getAllUsersController);
 router.get("/:id", getUserByIdController);
 router.put("/:id", updateUserController);
 router.delete("/:id", deleteUserController);
+
+router.get("/:id/allInfo", getUserInfoController);
 
 export default router;

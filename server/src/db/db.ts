@@ -3,7 +3,6 @@ import { IUser } from "../models/IUser";
 import { IGameAccount } from "../models/IGameAccount";
 import { IGameType } from "../models/IGameType";
 import { IGame } from "../models/IGame";
-import bcrypt from "bcrypt";
 
 export const db = new sqlite3.Database("database");
 
@@ -153,6 +152,21 @@ export const deleteUser = async (userID: number) => {
             resolve();
           }
         });
+      }
+    });
+  });
+};
+
+export const getGameAccountByUserId = async (
+  userId: number
+): Promise<IGameAccount> => {
+  const sql = `SELECT * FROM game_accounts WHERE userID = ?`;
+  return new Promise<IGameAccount>((resolve, reject) => {
+    db.get(sql, [userId], (error, gameAccount: IGameAccount) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(gameAccount);
       }
     });
   });
