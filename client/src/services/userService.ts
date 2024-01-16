@@ -99,7 +99,7 @@ export const createUser = async (
       password,
     });
 
-    const user: User = response.data.user;
+    const user: User = response.data;
 
     const userID = user.userID;
 
