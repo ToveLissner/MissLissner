@@ -18,7 +18,7 @@ export const createUserController = async (req: Request, res: Response) => {
   try {
     const newUser = req.body as IUser;
     await createUser(newUser);
-    res.json({ message: "User created successfully" });
+    res.json({ message: "User created successfully", newUser });
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: "Failed to create user" });
