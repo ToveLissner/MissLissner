@@ -1,0 +1,92 @@
+import React, { useEffect, useState } from "react";
+import { getAllGameTypes } from "../../services/gameService";
+import { GameType } from "../../models/GameType";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import AtgIcon from "../../ui-toolkit/components/AtgIcon";
+import colors from "../../ui-toolkit/colors";
+
+const GamesToPlay: React.FC = () => {
+  const [gameTypes, setGameTypes] = useState<GameType[]>([]);
+  const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
+
+  useEffect(() => {
+    const fetchGameTypes = async () => {
+      try {
+        const fetchedGameTypes = await getAllGameTypes();
+        setGameTypes(fetchedGameTypes);
+      } catch (error) {
+        console.error("Error fetching game types:", error);
+      }
+    };
+
+    fetchGameTypes();
+  }, []);
+
+  const getColor = (gameType: GameType) => {
+    return selectedGame === gameType
+      ? colors[`${gameType.gameType}backgroundMarked`]
+      : colors[`${gameType.gameType}background`];
+  };
+
+  const handleCardClick = (clickedGame: GameType) => {
+    setSelectedGame(clickedGame);
+  };
+
+  return (
+    <Box p={2}>
+      <Grid container spacing={2}>
+        {gameTypes.map((gameType) => (
+          <Grid
+            item
+            xs={gameTypes.length % 2 === 0 ? 6 : 12}
+            sm={gameTypes.length % 3 === 0 ? 4 : 12}
+            md={12 / gameTypes.length}
+            key={gameType.gameTypeID}
+          >
+            <Card
+              elevation={4}
+              style={{ height: "100%", cursor: "pointer" }}
+              sx={{
+                backgroundColor: getColor(gameType),
+                "&:hover": {
+                  backgroundColor:
+                    colors[`${gameType.gameType}backgroundMarked`],
+                },
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+              onClick={() => handleCardClick(gameType)}
+            >
+              <CardContent>
+                <Typography
+                  sx={{
+                    fontSize: "30px",
+                    fontWeight: "900",
+                    whiteSpace: "nowrap",
+                    textTransform: "uppercase",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "rgb(255, 255, 255)",
+                  }}
+                >
+                  {gameType.gameType}
+                  <Box
+                    sx={{
+                      transform: "scale(2)",
+                      marginTop: "1em",
+                    }}
+                  >
+                    <AtgIcon />
+                  </Box>
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
+  );
+};
+
+export default GamesToPlay;

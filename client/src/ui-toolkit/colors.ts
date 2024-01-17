@@ -1,4 +1,8 @@
-const colors = {
+type Colors = {
+  [key: string]: string;
+};
+
+const colors: Colors = {
   V75background: "rgb(0, 79, 159)",
   V86background: "rgb(113, 25, 112)",
   V64background: "rgb(243, 147, 50)",
