@@ -12,6 +12,7 @@ type ModalProps = {
   buttonText: string;
   onButtonClick: () => void;
   isButtonDisabled?: boolean;
+  buttonColor?: "primary" | "success";
 };
 
 const CustomModal: React.FC<ModalProps> = ({
@@ -22,6 +23,7 @@ const CustomModal: React.FC<ModalProps> = ({
   buttonText,
   onButtonClick,
   isButtonDisabled,
+  buttonColor,
 }) => {
   return (
     <Modal
@@ -49,6 +51,7 @@ const CustomModal: React.FC<ModalProps> = ({
           onClick={onButtonClick}
           buttonText={buttonText}
           isButtonDisabled={isButtonDisabled}
+          buttonColor={buttonColor}
         />
       </Box>
     </Modal>

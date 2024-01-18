@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
@@ -16,30 +16,20 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     (state: RootState) => state.user.data.gameAccount.balance
   );
 
-  //   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState<string>("");
   const [amountSelected, setAmountSelected] = useState<boolean>(false);
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
 
   const handleClose = () => {
-    // setSelectedAmount(null);
     setCustomAmount("");
     setAmountSelected(false);
     setPaymentText("Att betala: -");
   };
 
-  //   const handleAmountSelect = (amount: number) => {
-  //     setSelectedAmount(amount);
-  //     setCustomAmount("");
-  //     setAmountSelected(true);
-  //   };
-
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setCustomAmount(newValue);
 
-    // Återställ amountSelected om det anpassade beloppet tas bort
-    // if (selectedAmount === null && newValue === "") {
     if (newValue === "") {
       setAmountSelected(false);
       setPaymentText("Att betala: -");
@@ -49,16 +39,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     }
   };
 
-  //   const handleCustomAmountFocus = () => {
-  //     // setSelectedAmount(null);
-  //     setAmountSelected(true);
-  //   };
-
   const handleConfirm = () => {
-    // if (selectedAmount !== null) {
-    //   console.log(`Att betala: ${selectedAmount} kr`);
-    // } else
-
     if (customAmount !== "") {
       const customAmountValue = parseFloat(customAmount);
       if (!isNaN(customAmountValue) && customAmountValue > 0) {
@@ -74,9 +55,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
   };
 
   const buttonText =
-    userBalance !== undefined &&
-    // userBalance >= (selectedAmount ?? 0) + parseFloat(customAmount)
-    userBalance >= parseFloat(customAmount)
+    userBalance !== undefined && userBalance >= parseFloat(customAmount)
       ? "Bekräfta"
       : amountSelected
       ? "Sätt in pengar"
@@ -144,7 +123,6 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
               fullWidth
               value={customAmount}
               onChange={handleCustomAmountChange}
-              //   onFocus={handleCustomAmountFocus}
               sx={{ borderRadius: 0, mt: 1 }}
             />
           </Box>
@@ -156,13 +134,12 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
       }
       buttonText={buttonText}
       onButtonClick={
-        userBalance !== undefined &&
-        // userBalance >= (selectedAmount ?? 0) + parseFloat(customAmount)
-        userBalance >= parseFloat(customAmount)
+        userBalance !== undefined && userBalance >= parseFloat(customAmount)
           ? handleConfirm
           : () => console.log("Sätt in pengar")
       }
       isButtonDisabled={isButtonDisabled}
+      buttonColor={"success"}
     />
   );
 };

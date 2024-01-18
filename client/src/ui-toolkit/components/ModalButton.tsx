@@ -5,27 +5,26 @@ type ModalButtonProps = {
   onClick: () => void;
   buttonText: string;
   isButtonDisabled?: boolean;
+  buttonColor?: "primary" | "success";
 };
 
 const ModalButton: React.FC<ModalButtonProps> = ({
   onClick,
   buttonText,
   isButtonDisabled,
+  buttonColor,
 }) => {
   return (
     <Button
       variant="contained"
-      color="primary"
+      color={buttonColor}
       onClick={onClick}
       disabled={isButtonDisabled}
       sx={{
         mt: 2,
         textTransform: "none",
         width: "100%",
-        ...(isButtonDisabled && {
-          backgroundColor: "gray",
-          color: "white",
-        }),
+        height: "50px",
       }}
     >
       {buttonText}
