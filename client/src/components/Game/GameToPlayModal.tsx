@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
+import DepositModal from "../User/DepositModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
 import { useDispatch } from "react-redux";
@@ -19,6 +20,8 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
   const [customAmount, setCustomAmount] = useState<string>("");
   const [amountSelected, setAmountSelected] = useState<boolean>(false);
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
+  const [isDepositModalOpen, setDepositModalOpen] = useState(false);
+  const [depositAmount, setDepositAmount] = useState<string>("");
 
   const handleClose = () => {
     setCustomAmount("");
@@ -54,6 +57,12 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     }
   };
 
+  const handleDepositClick = () => {
+    const remainingAmount = Math.max(0, parseFloat(customAmount) - userBalance);
+    setDepositModalOpen(true);
+    setDepositAmount(remainingAmount.toString());
+  };
+
   const buttonText =
     userBalance !== undefined && userBalance >= parseFloat(customAmount)
       ? "Bekräfta"
@@ -65,82 +74,57 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     ? false
     : buttonText === "Bekräfta" && !customAmount;
 
-  console.log("Is button disabled:", isButtonDisabled);
-
   return (
-    <CustomModal
-      open={open}
-      onClose={() => {
-        handleClose();
-        onClose();
-      }}
-      onConfirm={handleConfirm}
-      title="Hur mycket vill du spela för?"
-      content={
-        <Box textAlign="center">
-          {/* Lista med belopp att välja */}
-          <Box>
-            {/* <Box display="flex" justifyContent="center" mb={2}>
-              {[50, 100, 150, 200].map((amount) => (
-                <Button
-                  key={amount}
-                  onClick={() => handleAmountSelect(amount)}
-                  variant={selectedAmount === amount ? "contained" : "outlined"}
-                  sx={{
-                    width: "25%",
-                    textTransform: "none",
-                    margin: 1,
-                    borderRadius: 0,
-                  }}
-                >
-                  {amount}kr
-                </Button>
-              ))}
+    <>
+      <CustomModal
+        open={open}
+        onClose={() => {
+          handleClose();
+          onClose();
+        }}
+        onConfirm={handleConfirm}
+        title="Lägg spel"
+        modalTitle="Hur mycket vill du spela för?"
+        content={
+          <Box textAlign="center">
+            {/* Lista med belopp att välja */}
+            <Box>{/* ... */}</Box>
+
+            <Box mt={2}>
+              <TextField
+                label="Eget belopp"
+                variant="outlined"
+                fullWidth
+                value={customAmount}
+                onChange={handleCustomAmountChange}
+                sx={{ borderRadius: 0, mt: 1 }}
+              />
             </Box>
-            <Box display="flex" justifyContent="center" mb={2}>
-              {[300, 400, 500, 1000].map((amount) => (
-                <Button
-                  key={amount}
-                  onClick={() => handleAmountSelect(amount)}
-                  variant={selectedAmount === amount ? "contained" : "outlined"}
-                  sx={{
-                    width: "25%",
-                    textTransform: "none",
-                    margin: 1,
-                    borderRadius: 0,
-                  }}
-                >
-                  {amount}kr
-                </Button>
-              ))}
-            </Box> */}
-          </Box>
 
-          <Box mt={2}>
-            <TextField
-              label="Ange eget belopp"
-              variant="outlined"
-              fullWidth
-              value={customAmount}
-              onChange={handleCustomAmountChange}
-              sx={{ borderRadius: 0, mt: 1 }}
-            />
+            <Box mt={2}>
+              <p>{paymentText}</p>
+            </Box>
           </Box>
+        }
+        buttonText={buttonText}
+        onButtonClick={
+          userBalance !== undefined && userBalance >= parseFloat(customAmount)
+            ? handleConfirm
+            : handleDepositClick
+        }
+        isButtonDisabled={isButtonDisabled}
+        buttonColor="success"
+      />
 
-          <Box mt={2}>
-            <p>{paymentText}</p>
-          </Box>
-        </Box>
-      }
-      buttonText={buttonText}
-      onButtonClick={
-        userBalance !== undefined && userBalance >= parseFloat(customAmount)
-          ? handleConfirm
-          : () => console.log("Sätt in pengar")
-      }
-      isButtonDisabled={isButtonDisabled}
-      buttonColor={"success"}
-    />
+      {isDepositModalOpen && (
+        <DepositModal
+          open={isDepositModalOpen}
+          onClose={() => setDepositModalOpen(false)}
+          initialAmount={depositAmount}
+          gamePrice={parseFloat(customAmount)}
+        />
+      )}
+    </>
   );
 };
 
