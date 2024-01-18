@@ -73,7 +73,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         open={open}
         onClose={onClose}
         onConfirm={() => {}}
-        title="Skapa användare"
+        title="Skapa konto"
+        modalTitle="Skapa användare"
         content={
           <>
             <TextField

@@ -84,6 +84,7 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         onConfirm={() => {}}
         title="Logga in"
+        modalTitle="Logga in"
         content={
           <>
             <TextField
