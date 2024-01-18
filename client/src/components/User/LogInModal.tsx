@@ -51,8 +51,6 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         setError("Användarnamn och/eller lösenord är felaktigt.");
       }
 
-      console.log("Före dispatch");
-
       const loginAction = logInAsync({ username, password });
       await dispatch(loginAction);
       setLoginSuccess(true);
@@ -76,6 +74,8 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  const isButtonDisabled = !username || !password;
 
   return (
     <>
@@ -112,6 +112,7 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         }
         buttonText="Logga in"
         onButtonClick={handleLogIn}
+        isButtonDisabled={isButtonDisabled}
       />
       <CustomSnackbar
         open={snackbarOpen}

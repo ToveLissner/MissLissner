@@ -65,6 +65,8 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
     setSnackbarOpen(false);
   };
 
+  const isButtonDisabled = !username || !password;
+
   return (
     <>
       <CustomModal
@@ -100,6 +102,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         }
         buttonText="Skapa konto"
         onButtonClick={handleCustomButtonClick}
+        isButtonDisabled={isButtonDisabled}
       />
       <CustomSnackbar
         open={snackbarOpen}
