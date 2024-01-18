@@ -49,10 +49,10 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     }
   };
 
-  const handleCustomAmountFocus = () => {
-    // setSelectedAmount(null);
-    setAmountSelected(true);
-  };
+  //   const handleCustomAmountFocus = () => {
+  //     // setSelectedAmount(null);
+  //     setAmountSelected(true);
+  //   };
 
   const handleConfirm = () => {
     // if (selectedAmount !== null) {
@@ -80,7 +80,13 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
       ? "Bekräfta"
       : amountSelected
       ? "Sätt in pengar"
-      : "Vänligen välj belopp";
+      : "Bekräfta";
+
+  const isButtonDisabled = amountSelected
+    ? false
+    : buttonText === "Bekräfta" && !customAmount;
+
+  console.log("Is button disabled:", isButtonDisabled);
 
   return (
     <CustomModal
@@ -138,7 +144,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
               fullWidth
               value={customAmount}
               onChange={handleCustomAmountChange}
-              onFocus={handleCustomAmountFocus}
+              //   onFocus={handleCustomAmountFocus}
               sx={{ borderRadius: 0, mt: 1 }}
             />
           </Box>
@@ -156,6 +162,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
           ? handleConfirm
           : () => console.log("Sätt in pengar")
       }
+      isButtonDisabled={isButtonDisabled}
     />
   );
 };

@@ -11,22 +11,18 @@ type ModalProps = {
   content: React.ReactNode;
   buttonText: string;
   onButtonClick: () => void;
+  isButtonDisabled?: boolean;
 };
 
 const CustomModal: React.FC<ModalProps> = ({
   open,
   onClose,
-  onConfirm,
   title,
   content,
   buttonText,
   onButtonClick,
+  isButtonDisabled,
 }) => {
-  const handleConfirm = () => {
-    onConfirm({});
-    onClose();
-  };
-
   return (
     <Modal
       open={open}
@@ -48,10 +44,12 @@ const CustomModal: React.FC<ModalProps> = ({
         }}
       >
         <ModalHeader title={title} onClose={onClose} />
-
         {content}
-
-        <ModalButton onClick={onButtonClick} buttonText={buttonText} />
+        <ModalButton
+          onClick={onButtonClick}
+          buttonText={buttonText}
+          isButtonDisabled={isButtonDisabled}
+        />
       </Box>
     </Modal>
   );
