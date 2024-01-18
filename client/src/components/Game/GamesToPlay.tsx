@@ -20,8 +20,6 @@ const GamesToPlay: React.FC = () => {
   );
   const isLoggedIn = userData.isLoggedIn;
 
-  console.log(isLoggedIn);
-
   useEffect(() => {
     const fetchGameTypes = async () => {
       try {
@@ -44,10 +42,8 @@ const GamesToPlay: React.FC = () => {
   const handleCardClick = (clickedGame: GameType) => {
     setSelectedGame(clickedGame);
     if (isLoggedIn === true) {
-      console.log("Här ska modalen för köp komma upp");
       setGameToPlayModalOpen(true);
     } else {
-      console.log("behöver logga in");
       setPreLogInModalOpen(true);
     }
   };
@@ -89,6 +85,7 @@ const GamesToPlay: React.FC = () => {
                     alignItems: "center",
                     color: "rgb(255, 255, 255)",
                   }}
+                  component="div"
                 >
                   {gameType.gameType}
                   <Box
