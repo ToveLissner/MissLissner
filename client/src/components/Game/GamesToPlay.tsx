@@ -4,10 +4,23 @@ import { GameType } from "../../models/GameType";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import AtgIcon from "../../ui-toolkit/components/AtgIcon";
 import colors from "../../ui-toolkit/colors";
+import { useSelector } from "react-redux";
+import { UserAllInfo } from "../../models/User";
+import PreLogInModal from "../User/PreLogInModal";
+import GameToPlayModal from "./GameToPlayModal";
 
 const GamesToPlay: React.FC = () => {
   const [gameTypes, setGameTypes] = useState<GameType[]>([]);
   const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
+  const [isPreLogInModalOpen, setPreLogInModalOpen] = useState(false);
+  const [isGameToPlayModalOpen, setGameToPlayModalOpen] = useState(false);
+
+  const userData = useSelector(
+    (state: { user: { data: UserAllInfo } }) => state.user.data
+  );
+  const isLoggedIn = userData.isLoggedIn;
+
+  console.log(isLoggedIn);
 
   useEffect(() => {
     const fetchGameTypes = async () => {
@@ -30,6 +43,13 @@ const GamesToPlay: React.FC = () => {
 
   const handleCardClick = (clickedGame: GameType) => {
     setSelectedGame(clickedGame);
+    if (isLoggedIn === true) {
+      console.log("Här ska modalen för köp komma upp");
+      setGameToPlayModalOpen(true);
+    } else {
+      console.log("behöver logga in");
+      setPreLogInModalOpen(true);
+    }
   };
 
   return (
@@ -85,6 +105,14 @@ const GamesToPlay: React.FC = () => {
           </Grid>
         ))}
       </Grid>
+      <PreLogInModal
+        open={isPreLogInModalOpen}
+        onClose={() => setPreLogInModalOpen(false)}
+      />
+      <GameToPlayModal
+        open={isGameToPlayModalOpen}
+        onClose={() => setGameToPlayModalOpen(false)}
+      />
     </Box>
   );
 };
