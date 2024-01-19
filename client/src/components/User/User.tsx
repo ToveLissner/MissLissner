@@ -6,12 +6,14 @@ import LogInModal from "./LogInModal";
 import LogOutButton from "./LogOutButton";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../../domain/store";
+import DepositModal from "./DepositModal";
 
 type AppThunk = ThunkDispatch<RootState, null, Action<string>>;
 
 const User: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDepositModalOpen, setDepositModalOpen] = useState(false);
 
   const dispatch = useDispatch<AppThunk>();
   const userData = useSelector(
@@ -25,8 +27,6 @@ const User: React.FC = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        // const getBalanceAction = getBalanceAsync(userID);
-        // await dispatch(getBalanceAction); // det ska vara await!
       } catch (error) {
         console.error("Failed to fetch balance:", error);
       }
@@ -51,6 +51,13 @@ const User: React.FC = () => {
 
   return (
     <>
+      {" "}
+      {isDepositModalOpen && (
+        <DepositModal
+          open={isDepositModalOpen}
+          onClose={() => setDepositModalOpen(false)}
+        />
+      )}
       <Box
         display="flex"
         alignItems="center"
@@ -78,9 +85,14 @@ const User: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
+        <MenuItem onClick={() => setDepositModalOpen(true)}>
+          Sätt in pengar
+        </MenuItem>
         <MenuItem>Mina spel</MenuItem>
         <MenuItem>Mitt konto</MenuItem>
-        {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
+        <MenuItem>
+          {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
+        </MenuItem>
       </Menu>
       <LogInModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
