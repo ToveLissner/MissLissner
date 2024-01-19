@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import CustomSnackbar from "../../ui-toolkit/components/CustomSnackbar";
 import { createUser } from "../../services/userService";
@@ -74,16 +74,40 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         onConfirm={() => {}}
         title="Skapa konto"
-        modalTitle="Skapa användare"
+        // modalTitle="Skapa användare"
         content={
           <>
+            <Box
+              sx={{
+                textAlign: "center",
+                fontStyle: "italic",
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                Ta del av spännande spelupplevelser!
+              </Typography>
+
+              <Typography
+                variant="body1"
+                sx={{
+                  marginBottom: "20px",
+                }}
+              >
+                Skapa ditt konto på 1 min.
+              </Typography>
+            </Box>
             <TextField
               label="Användarnamn"
               variant="outlined"
               value={username}
               onChange={handleInputUsername}
               fullWidth
-              margin="normal"
+              sx={{ marginTop: 0 }}
             />
             <TextField
               label="Lösenord"

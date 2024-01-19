@@ -33,9 +33,6 @@ const DepositModal: React.FC<DepositModalProps> = ({
   const displayCostInfo = gamePrice > 0;
 
   const handleConfirm = () => {
-    console.log(`Balance: ${userBalance}`);
-    console.log(`Insättning bekräftad med belopp: ${depositAmount}`);
-    console.log(`Pris: ${gamePrice}`);
     onClose();
   };
 
@@ -48,35 +45,48 @@ const DepositModal: React.FC<DepositModalProps> = ({
       content={
         <>
           {displayCostInfo && (
-            <>
-              <Typography variant="h6" sx={{ marginBottom: "20px" }}>
+            <Box
+              sx={{
+                paddingBottom: "25px",
+                borderBottom: "1px solid grey",
+              }}
+            >
+              <Typography variant="h6" sx={{ marginBottom: "14px" }}>
                 Ditt saldo är för lågt
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{ height: "30px" }}>
                   <Typography>Kostnad för spel:</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{ height: "30px" }}>
                   <Typography align="right">{gamePrice} kr</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{ height: "30px" }}>
                   <Typography>Ditt saldo:</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sx={{ height: "30px" }}>
                   <Typography align="right">{userBalance} kr</Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography>Saknas:</Typography>
+                <Grid item xs={6} sx={{ height: "30px" }}>
+                  <Typography sx={{ marginBottom: "16px", fontWeight: "bold" }}>
+                    Saknas:
+                  </Typography>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography align="right">
+                <Grid item xs={6} sx={{ height: "30px" }}>
+                  <Typography
+                    sx={{ marginBottom: "16px", fontWeight: "bold" }}
+                    align="right"
+                  >
                     {Math.max(0, gamePrice - userBalance)} kr
                   </Typography>
                 </Grid>
               </Grid>
-            </>
+            </Box>
           )}
-          <Typography variant="h6" sx={{ marginBottom: "20px" }}>
+          <Typography
+            variant="h6"
+            sx={{ marginTop: "12px", marginBottom: "14px" }}
+          >
             Hur mycket vill du sätta in?
           </Typography>
 

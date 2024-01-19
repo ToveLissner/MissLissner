@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import DepositModal from "../User/DepositModal";
 import { useSelector } from "react-redux";
@@ -83,28 +83,50 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
           onClose();
         }}
         onConfirm={handleConfirm}
-        title="Lägg spel"
-        modalTitle="Hur mycket vill du spela för?"
+        title="Bekräfta ditt spel"
         content={
-          <Box textAlign="center">
-            {/* Lista med belopp att välja */}
-            <Box>{/* ... */}</Box>
-
-            <Box mt={2}>
-              <TextField
-                label="Eget belopp"
-                variant="outlined"
-                fullWidth
-                value={customAmount}
-                onChange={handleCustomAmountChange}
-                sx={{ borderRadius: 0, mt: 1 }}
-              />
+          <>
+            <Box
+              sx={{
+                textAlign: "center",
+                textTransform: "uppercase",
+                fontStyle: "italic",
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{
+                  marginBottom: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+                Miss Lissner väljer hästarna
+              </Typography>
             </Box>
 
-            <Box mt={2}>
-              <p>{paymentText}</p>
+            <Typography variant="h6" sx={{ marginBottom: "20px" }}>
+              Hur mycket vill du spela för?
+            </Typography>
+            <Box textAlign="center">
+              {/* Lista med belopp att välja */}
+              <Box>{/* ... */}</Box>
+
+              <Box mt={2}>
+                <TextField
+                  label="Eget belopp"
+                  variant="outlined"
+                  fullWidth
+                  value={customAmount}
+                  onChange={handleCustomAmountChange}
+                  sx={{ borderRadius: 0, mt: 1 }}
+                />
+              </Box>
+
+              <Box mt={2}>
+                <p>{paymentText}</p>
+              </Box>
             </Box>
-          </Box>
+          </>
         }
         buttonText={buttonText}
         onButtonClick={

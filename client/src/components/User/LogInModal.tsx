@@ -93,7 +93,7 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
               fullWidth
               value={username}
               onChange={handleInputUsername}
-              margin="normal"
+              sx={{ marginTop: 0 }}
             />
             <TextField
               label="Lösenord"
