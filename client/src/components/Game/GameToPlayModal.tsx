@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import DepositModal from "../User/DepositModal";
 import { useSelector } from "react-redux";
@@ -119,6 +119,11 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
                   value={customAmount}
                   onChange={handleCustomAmountChange}
                   sx={{ borderRadius: 0, mt: 1 }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">kr</InputAdornment>
+                    ),
+                  }}
                 />
               </Box>
 

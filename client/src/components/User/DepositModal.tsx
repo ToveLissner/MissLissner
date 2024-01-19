@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Box, Grid, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
@@ -98,6 +104,11 @@ const DepositModal: React.FC<DepositModalProps> = ({
               value={depositAmount}
               onChange={handleDepositAmountChange}
               sx={{ borderRadius: 0, mt: 1 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">kr</InputAdornment>
+                ),
+              }}
             />
           </Box>
         </>
