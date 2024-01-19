@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Menu, MenuItem, Typography, Box } from "@mui/material";
+import { Avatar, Menu, MenuItem, Typography, Box, Button } from "@mui/material";
 import { UserAllInfo } from "../../models/User";
 import LogInModal from "./LogInModal";
 import LogOutButton from "./LogOutButton";
@@ -21,6 +21,10 @@ const User: React.FC = () => {
   );
   const isLoggedIn = userData.isLoggedIn;
   const userID = userData.user.userID;
+
+  const username = userData.user.username;
+
+  const balance = userData.gameAccount.balance;
 
   console.log(userData);
 
@@ -84,15 +88,89 @@ const User: React.FC = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
+        PaperProps={{
+          sx: {
+            backgroundColor: "white",
+            width: "300px",
+            height: "120vh",
+            // top: "auto",
+          },
+        }}
       >
-        <MenuItem onClick={() => setDepositModalOpen(true)}>
-          Sätt in pengar
-        </MenuItem>
-        <MenuItem>Mina spel</MenuItem>
-        <MenuItem>Mitt konto</MenuItem>
-        <MenuItem>
-          {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
-        </MenuItem>
+        <Box
+          sx={{
+            p: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography>{username}</Typography>
+          <Typography>{balance} kr</Typography>
+
+          {/* ska ha en knapp för uppdatering och för att se/inte se */}
+
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => setDepositModalOpen(true)}
+            sx={{
+              mt: 2,
+              textTransform: "none",
+              width: "100%",
+              height: "50px",
+            }}
+          >
+            Sätt in pengar
+          </Button>
+        </Box>
+        <Box sx={{ backgroundColor: "rgb(236, 236, 237)" }}>
+          <Box sx={{ width: "100%", p: 1 }}>
+            <Typography sx={{ color: "grey" }}>Mina spel</Typography>
+          </Box>
+          <MenuItem
+            sx={{
+              paddingLeft: 1,
+              backgroundColor: "white",
+              margin: "2px",
+            }}
+          >
+            Spelkvitton
+          </MenuItem>
+          <Box sx={{ width: "100%", p: 1 }}>
+            <Typography sx={{ color: "grey" }}>Mitt konto</Typography>
+          </Box>
+          <MenuItem
+            sx={{
+              paddingLeft: 1,
+              backgroundColor: "white",
+              margin: "2px",
+            }}
+          >
+            Mina pengar
+          </MenuItem>
+          <MenuItem
+            sx={{
+              paddingLeft: 1,
+              backgroundColor: "white",
+              margin: "2px",
+            }}
+          >
+            Kontoinställningar
+          </MenuItem>
+
+          <Box
+            sx={{
+              p: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              backgroundColor: "white",
+            }}
+          >
+            {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
+          </Box>
+        </Box>
       </Menu>
       <LogInModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
