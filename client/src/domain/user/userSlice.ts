@@ -1,8 +1,11 @@
 import { createSlice, PayloadAction, ThunkAction } from "@reduxjs/toolkit";
-import { getBalance, loginUser } from "../../services/userService";
+import {
+  getBalanceService,
+  loginUserService,
+} from "../../services/userService";
 import { RootState } from "../store";
 import { Dispatch } from "redux";
-import { User, UserAllInfo } from "../../models/User";
+import { UserAllInfo } from "../../models/User";
 
 type UserState = {
   data: UserAllInfo;
@@ -29,10 +32,10 @@ const initialState: UserState = {
 export const logInAsync = (payload: {
   username: string;
   password: string;
-}): ThunkAction<void, RootState, unknown, PayloadAction<User>> => {
+}): ThunkAction<void, RootState, unknown, PayloadAction<UserAllInfo>> => {
   return async (dispatch: Dispatch) => {
     try {
-      const user = await loginUser(payload.username, payload.password);
+      const user = await loginUserService(payload.username, payload.password);
       dispatch(logIn(user));
     } catch (error) {
       console.error("Failed to log in:", error);
@@ -45,7 +48,7 @@ export const getBalanceAsync = (
 ): ThunkAction<void, RootState, unknown, PayloadAction<number>> => {
   return async (dispatch: Dispatch) => {
     try {
-      const balance = await getBalance(userID);
+      const balance = await getBalanceService(userID);
       dispatch(setBalance(balance));
     } catch (error) {
       console.error("Failed to get balance:", error);
@@ -67,16 +70,21 @@ const userSlice = createSlice({
       };
     },
     setBalance: (state, action: PayloadAction<number>) => {
+      console.log("Dispatching setBalance action with value:", action.payload);
       return {
         ...state,
         data: {
           ...state.data,
-          balance: action.payload,
+          gameAccount: {
+            ...state.data.gameAccount,
+            balance: action.payload,
+          },
         },
         loading: false,
         error: null,
       };
     },
+
     logOut: (state) => {
       return { ...state, data: initialState.data, isLoggedIn: false };
     },

@@ -42,11 +42,11 @@ export const updateGameAccountBalanceController = async (
   req: Request,
   res: Response
 ) => {
-  const accountId = parseInt(req.params.id, 10);
+  const userID = parseInt(req.params.id, 10);
   const newBalance = req.body.balance;
 
   try {
-    await updateGameAccountBalance(accountId, newBalance);
+    await updateGameAccountBalance(userID, newBalance);
     res.json({ message: "Game account balance updated successfully" });
   } catch (error) {
     console.error(error);

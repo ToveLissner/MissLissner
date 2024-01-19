@@ -7,8 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
+import { depositAmountService } from "../../services/userService";
+import { setBalance } from "../../domain/user/userSlice";
 
 type DepositModalProps = {
   open: boolean;
@@ -23,11 +25,12 @@ const DepositModal: React.FC<DepositModalProps> = ({
   initialAmount = "",
   gamePrice = 0,
 }) => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state: RootState) => state.user.data);
   const [depositAmount, setDepositAmount] = useState(initialAmount);
 
-  const userBalance = useSelector(
-    (state: RootState) => state.user.data.gameAccount.balance
-  );
+  const userBalance = userData.gameAccount.balance;
+  const userID = userData.user.userID;
 
   const handleDepositAmountChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -38,8 +41,17 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   const displayCostInfo = gamePrice > 0;
 
-  const handleConfirm = () => {
-    onClose();
+  const handleConfirm = async () => {
+    const newBalance = parseFloat(depositAmount) + userBalance;
+    try {
+      await depositAmountService(userID, newBalance);
+
+      dispatch(setBalance(newBalance));
+
+      onClose();
+    } catch (error) {
+      console.error("Error confirming deposit:", error);
+    }
   };
 
   return (

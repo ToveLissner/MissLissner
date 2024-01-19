@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import CustomSnackbar from "../../ui-toolkit/components/CustomSnackbar";
-import { createUser } from "../../services/userService";
+import { createUserService } from "../../services/userService";
 
 type SignUpModalProps = {
   open: boolean;
@@ -40,7 +40,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         setError("Lösenordet måste vara minst 7 tecken långt.");
         return;
       }
-      await createUser(username, password);
+      await createUserService(username, password);
 
       setSnackbarSeverity("success");
       setSnackbarMessage("Användaren har skapats framgångsrikt!");

@@ -4,7 +4,6 @@ import { Avatar, Menu, MenuItem, Typography, Box } from "@mui/material";
 import { UserAllInfo } from "../../models/User";
 import LogInModal from "./LogInModal";
 import LogOutButton from "./LogOutButton";
-import { getBalanceAsync } from "../../domain/user/userSlice";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../../domain/store";
 
@@ -26,8 +25,8 @@ const User: React.FC = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        const getBalanceAction = getBalanceAsync(userID);
-        await dispatch(getBalanceAction); // det ska vara await!
+        // const getBalanceAction = getBalanceAsync(userID);
+        // await dispatch(getBalanceAction); // det ska vara await!
       } catch (error) {
         console.error("Failed to fetch balance:", error);
       }

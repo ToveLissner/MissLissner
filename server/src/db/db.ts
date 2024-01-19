@@ -210,12 +210,30 @@ export const getGameAccountById = async (
   });
 };
 
+// export const updateGameAccountBalance = async (
+//   accountID: number,
+//   newBalance: number
+// ) => {
+//   const sql = `UPDATE game_accounts SET balance = ? WHERE accountID = ?`;
+//   const values = [newBalance, accountID];
+
+//   return new Promise<void>((resolve, reject) => {
+//     db.run(sql, values, (error) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve();
+//       }
+//     });
+//   });
+// };
+
 export const updateGameAccountBalance = async (
-  accountID: number,
+  userID: number,
   newBalance: number
 ) => {
-  const sql = `UPDATE game_accounts SET balance = ? WHERE accountID = ?`;
-  const values = [newBalance, accountID];
+  const sql = `UPDATE game_accounts SET balance = ? WHERE userID = ?`;
+  const values = [newBalance, userID];
 
   return new Promise<void>((resolve, reject) => {
     db.run(sql, values, (error) => {

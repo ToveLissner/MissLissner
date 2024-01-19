@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import DepositModal from "../User/DepositModal";
@@ -12,16 +12,29 @@ type GameToPlayModalProps = {
 };
 
 const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
+  console.log("GameToPlayModal rendering...");
+
   const dispatch = useDispatch();
   const userBalance = useSelector(
     (state: RootState) => state.user.data.gameAccount.balance
   );
+  console.log("Redux Store userBalance:", userBalance);
 
   const [customAmount, setCustomAmount] = useState<string>("");
   const [amountSelected, setAmountSelected] = useState<boolean>(false);
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState<string>("");
+
+  console.log(userBalance);
+  console.log("GameToPlayModal rendering with userBalance:", userBalance);
+
+  useEffect(() => {
+    console.log(
+      "GameToPlayModal component updated with userBalance:",
+      userBalance
+    );
+  }, [userBalance]);
 
   const handleClose = () => {
     setCustomAmount("");
@@ -47,8 +60,6 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
       const customAmountValue = parseFloat(customAmount);
       if (!isNaN(customAmountValue) && customAmountValue > 0) {
         setPaymentText(`Att betala: ${customAmountValue} kr`);
-
-        console.log(`Summa att betala: ${customAmountValue} kr`);
       } else {
         console.error("Ogiltigt eget belopp");
       }
