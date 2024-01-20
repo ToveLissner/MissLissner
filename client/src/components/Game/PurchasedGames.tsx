@@ -29,7 +29,23 @@ const PurchasedGames: React.FC = () => {
               <Typography>Inga kvitton hittades</Typography>
             </Box>
           )
-        ) : null}
+        ) : (
+          <Box
+            sx={{
+              backgroundColor: "white",
+              borderRadius: "8px",
+              padding: "16px",
+              margin: "16px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography>
+              För att kunna se dina spelkvitton måste du vara inloggad
+            </Typography>
+          </Box>
+        )}
       </Box>
     </>
   );
