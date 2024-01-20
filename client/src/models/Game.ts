@@ -1,7 +1,7 @@
 export type Game = {
   gameID?: number;
   price: number;
-  purchaseDate?: string;
+  purchaseDate: string;
   gameTypeID: number;
   userID: number;
 };
