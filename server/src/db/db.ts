@@ -392,6 +392,20 @@ export const getAllGames = async (): Promise<IGame[]> => {
   });
 };
 
+export const getAllGamesByUserId = async (userId: number): Promise<IGame[]> => {
+  const sql = `SELECT * FROM games WHERE userID = ?`;
+
+  return new Promise<IGame[]>((resolve, reject) => {
+    db.all(sql, [userId], (error, rows: IGame[]) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(rows || []);
+      }
+    });
+  });
+};
+
 export const getGameById = async (gameId: number): Promise<IGame | null> => {
   const sql = `SELECT * FROM games WHERE gameID = ?`;
 

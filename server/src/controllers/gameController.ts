@@ -3,6 +3,7 @@ import {
   createGame,
   deleteGame,
   getAllGames,
+  getAllGamesByUserId,
   getGameById,
   updateGame,
 } from "../db/db";
@@ -40,6 +41,26 @@ export const getGameByIdController = async (req: Request, res: Response) => {
       res.json(game);
     } else {
       res.status(404).json({ error: "Game not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getAllGamesByUserIdController = async (
+  req: Request,
+  res: Response
+) => {
+  const userId = parseInt(req.params.id, 10);
+
+  try {
+    const gameList = await getAllGamesByUserId(userId);
+
+    if (gameList) {
+      res.json(gameList);
+    } else {
+      res.status(404).json({ error: "No games found" });
     }
   } catch (error) {
     console.error(error);
