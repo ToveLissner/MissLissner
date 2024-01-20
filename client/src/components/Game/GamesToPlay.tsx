@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { getAllGameTypes } from "../../services/gameService";
 import { GameType } from "../../models/GameType";
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  Typography,
+} from "@mui/material";
 import AtgIcon from "../../ui-toolkit/components/AtgIcon";
 import colors from "../../ui-toolkit/colors";
 import { useSelector } from "react-redux";
@@ -49,7 +56,7 @@ const GamesToPlay: React.FC = () => {
   };
 
   return (
-    <Box p={2}>
+    <Box p={2} sx={{ backgroundColor: "rgb(236, 236, 237)" }}>
       <Grid container spacing={2}>
         {gameTypes.map((gameType) => (
           <Grid
@@ -61,8 +68,9 @@ const GamesToPlay: React.FC = () => {
           >
             <Card
               elevation={4}
-              style={{ height: "100%", cursor: "pointer" }}
+              // style={{ height: "100%", cursor: "pointer" }}
               sx={{
+                cursor: "pointer",
                 backgroundColor: getColor(gameType),
                 "&:hover": {
                   backgroundColor:
@@ -99,6 +107,25 @@ const GamesToPlay: React.FC = () => {
                 </Typography>
               </CardContent>
             </Card>
+            <Box sx={{ backgroundColor: "white" }}>
+              <Button
+                onClick={() => handleCardClick(gameType)}
+                sx={{
+                  textTransform: "none",
+                  cursor: "pointer",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  color: "rgb(32, 124, 184)",
+                  "&:hover": {
+                    color: "black",
+                    backgroundColor: "transparent",
+                  },
+                }}
+              >
+                Välj belopp
+              </Button>
+            </Box>
           </Grid>
         ))}
       </Grid>
