@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { logInAsync } from "../../domain/user/userSlice";
+import { logInAsync } from "../../domain/slices/userSlice";
 import { ThunkDispatch } from "redux-thunk";
 import { Action } from "@reduxjs/toolkit";
 import { RootState } from "../../domain/store";
@@ -84,9 +84,12 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         onConfirm={() => {}}
         title="Logga in"
-        modalTitle="Logga in"
+        // modalTitle="Ange användarnamn och lösenord"
         content={
           <>
+            <Typography sx={{ paddingBottom: 2 }}>
+              Logga in med ditt användarnamn och lösenord
+            </Typography>
             <TextField
               label="Användarnamn"
               variant="outlined"

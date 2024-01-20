@@ -10,7 +10,7 @@ import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
 import { updateGameAccountBalanceService } from "../../services/userService";
-import { setBalance } from "../../domain/user/userSlice";
+import { setBalance } from "../../domain/slices/userSlice";
 
 type DepositModalProps = {
   open: boolean;

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
 import { useDispatch } from "react-redux";
 import { updateGameAccountBalanceService } from "../../services/userService";
-import { setBalance } from "../../domain/user/userSlice";
+import { setBalance } from "../../domain/slices/userSlice";
 
 type GameToPlayModalProps = {
   open: boolean;
@@ -33,7 +33,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState<string>("");
-  const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
+  //   const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
 
   //   console.log(userBalance);
   //   console.log("GameToPlayModal rendering with userBalance:", userBalance);
