@@ -9,7 +9,7 @@ import {
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
-import { depositAmountService } from "../../services/userService";
+import { updateGameAccountBalanceService } from "../../services/userService";
 import { setBalance } from "../../domain/user/userSlice";
 
 type DepositModalProps = {
@@ -44,7 +44,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
   const handleConfirm = async () => {
     const newBalance = parseFloat(depositAmount) + userBalance;
     try {
-      await depositAmountService(userID, newBalance);
+      await updateGameAccountBalanceService(userID, newBalance);
 
       dispatch(setBalance(newBalance));
 

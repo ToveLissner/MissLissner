@@ -123,7 +123,10 @@ export const createUserService = async (
 
 // update balance
 
-export const depositAmountService = async (userID: number, balance: number) => {
+export const updateGameAccountBalanceService = async (
+  userID: number,
+  balance: number
+) => {
   try {
     const response = await axios.put(
       `${API_BASE_URL}/game-accounts/${userID}`,
