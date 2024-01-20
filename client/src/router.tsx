@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import HomePage from "./components/Pages/HomePage";
 import ImagesPage from "./components/Pages/ImagesPage";
+import PurchasedPage from "./components/Pages/PurchasedPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,8 +17,14 @@ export const router = createBrowserRouter([
       },
 
       {
-        path: "/images",
+        path: "/bilder",
         element: <ImagesPage />,
+        index: true,
+      },
+
+      {
+        path: "/spelkvitton",
+        element: <PurchasedPage />,
         index: true,
       },
     ],
