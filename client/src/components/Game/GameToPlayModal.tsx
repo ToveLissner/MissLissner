@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import DepositModal from "../User/DepositModal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
 import { useDispatch } from "react-redux";
+import { updateGameAccountBalanceService } from "../../services/userService";
+import { setBalance } from "../../domain/user/userSlice";
 
 type GameToPlayModalProps = {
   open: boolean;
@@ -12,29 +14,36 @@ type GameToPlayModalProps = {
 };
 
 const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
-  console.log("GameToPlayModal rendering...");
+  //   console.log("GameToPlayModal rendering...");
 
   const dispatch = useDispatch();
-  const userBalance = useSelector(
-    (state: RootState) => state.user.data.gameAccount.balance
-  );
-  console.log("Redux Store userBalance:", userBalance);
+  //   const userBalance = useSelector(
+  //     (state: RootState) => state.user.data.gameAccount.balance
+  //   );
+
+  const userData = useSelector((state: RootState) => state.user.data);
+
+  const userBalance = userData.gameAccount.balance;
+  const userID = userData.user.userID;
+
+  //   console.log("Redux Store userBalance:", userBalance);
 
   const [customAmount, setCustomAmount] = useState<string>("");
   const [amountSelected, setAmountSelected] = useState<boolean>(false);
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState<string>("");
+  const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
 
-  console.log(userBalance);
-  console.log("GameToPlayModal rendering with userBalance:", userBalance);
+  //   console.log(userBalance);
+  //   console.log("GameToPlayModal rendering with userBalance:", userBalance);
 
-  useEffect(() => {
-    console.log(
-      "GameToPlayModal component updated with userBalance:",
-      userBalance
-    );
-  }, [userBalance]);
+  //   useEffect(() => {
+  //     console.log(
+  //       "GameToPlayModal component updated with userBalance:",
+  //       userBalance
+  //     );
+  //   }, [userBalance]);
 
   const handleClose = () => {
     setCustomAmount("");
@@ -55,16 +64,18 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
     }
   };
 
-  const handleConfirm = () => {
-    if (customAmount !== "") {
-      const customAmountValue = parseFloat(customAmount);
-      if (!isNaN(customAmountValue) && customAmountValue > 0) {
-        setPaymentText(`Att betala: ${customAmountValue} kr`);
-      } else {
-        console.error("Ogiltigt eget belopp");
-      }
-    } else {
-      console.error("Inget belopp valt");
+  const handlePurchaseConfirm = async () => {
+    // här borde jag väl lägga in att vi skapar ett spel
+
+    const newBalance = userBalance - parseFloat(customAmount);
+    try {
+      await updateGameAccountBalanceService(userID, newBalance);
+
+      dispatch(setBalance(newBalance));
+
+      onClose();
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -93,7 +104,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
           handleClose();
           onClose();
         }}
-        onConfirm={handleConfirm}
+        onConfirm={handlePurchaseConfirm}
         title="Bekräfta ditt spel"
         content={
           <>
@@ -147,7 +158,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
         buttonText={buttonText}
         onButtonClick={
           userBalance !== undefined && userBalance >= parseFloat(customAmount)
-            ? handleConfirm
+            ? handlePurchaseConfirm
             : handleDepositClick
         }
         isButtonDisabled={isButtonDisabled}
