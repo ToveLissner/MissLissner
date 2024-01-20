@@ -1,13 +1,14 @@
 import axios from "axios";
 import { GameType } from "../models/GameType";
+import { Game } from "../models/Game";
 
 const API_BASE_URL = "http://localhost:4440";
 
-const getAllGameTypes = async (): Promise<GameType[]> => {
+export const getAllGameTypesService = async (): Promise<GameType[]> => {
   try {
     const response = await axios.get<GameType[]>(`${API_BASE_URL}/game-types`);
 
-    console.log("Response from login API call:", response.data);
+    // console.log("Response from login API call:", response.data);
 
     return response.data;
   } catch (error) {
@@ -16,7 +17,19 @@ const getAllGameTypes = async (): Promise<GameType[]> => {
   }
 };
 
-export { getAllGameTypes };
+export const getAllGamesByUserIdService = async (
+  userId: number
+): Promise<Game[]> => {
+  try {
+    const response = await axios.get<Game[]>(
+      `${API_BASE_URL}/games/user/${userId}`
+    );
 
-// import { Game } from "../models/Game";
-// import { GameAccount } from "../models/GameAccount";
+    // console.log("Response from getAllGamesByUserId API call:", response.data);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching games by user ID:", error);
+    throw error;
+  }
+};

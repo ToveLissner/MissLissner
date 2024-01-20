@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getAllGameTypes } from "../../services/gameService";
+import { getAllGameTypesService } from "../../services/gameService";
 import { GameType } from "../../models/GameType";
 import {
   Box,
@@ -30,7 +30,7 @@ const GamesToPlay: React.FC = () => {
   useEffect(() => {
     const fetchGameTypes = async () => {
       try {
-        const fetchedGameTypes = await getAllGameTypes();
+        const fetchedGameTypes = await getAllGameTypesService();
         setGameTypes(fetchedGameTypes);
       } catch (error) {
         console.error("Error fetching game types:", error);
