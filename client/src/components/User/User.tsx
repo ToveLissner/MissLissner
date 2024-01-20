@@ -7,6 +7,9 @@ import LogOutButton from "./LogOutButton";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../../domain/store";
 import DepositModal from "./DepositModal";
+import { Game } from "../../models/Game";
+import { getGamesByUserIdAsync } from "../../domain/slices/gameSlice";
+import { Link } from "react-router-dom";
 
 type AppThunk = ThunkDispatch<RootState, null, Action<string>>;
 
@@ -28,6 +31,12 @@ const User: React.FC = () => {
 
   console.log(userData);
 
+  const gameData = useSelector(
+    (state: { game: { games: Game[] } }) => state.game.games
+  );
+
+  console.log(gameData);
+
   useEffect(() => {
     const fetchBalance = async () => {
       try {
@@ -39,6 +48,20 @@ const User: React.FC = () => {
     if (isLoggedIn && userID) {
       fetchBalance();
     }
+  }, [dispatch, isLoggedIn, userID]);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        if (isLoggedIn && userID) {
+          dispatch(getGamesByUserIdAsync(userID));
+        }
+      } catch (error) {
+        console.error("Failed to fetch games:", error);
+      }
+    };
+
+    fetchGames();
   }, [dispatch, isLoggedIn, userID]);
 
   const handleMenuClose = () => {
@@ -93,7 +116,6 @@ const User: React.FC = () => {
             backgroundColor: "white",
             width: "300px",
             height: "120vh",
-            // top: "auto",
           },
         }}
       >
@@ -128,6 +150,7 @@ const User: React.FC = () => {
           <Box sx={{ width: "100%", p: 1 }}>
             <Typography sx={{ color: "grey" }}>Mina spel</Typography>
           </Box>
+
           <MenuItem
             sx={{
               paddingLeft: 1,
@@ -135,8 +158,15 @@ const User: React.FC = () => {
               margin: "2px",
             }}
           >
-            Spelkvitton
+            {" "}
+            <Link
+              to="/spelkvitton"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              Spelkvitton
+            </Link>
           </MenuItem>
+
           <Box sx={{ width: "100%", p: 1 }}>
             <Typography sx={{ color: "grey" }}>Mitt konto</Typography>
           </Box>
@@ -149,6 +179,7 @@ const User: React.FC = () => {
           >
             Mina pengar
           </MenuItem>
+
           <MenuItem
             sx={{
               paddingLeft: 1,
