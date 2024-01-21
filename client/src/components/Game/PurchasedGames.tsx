@@ -11,6 +11,11 @@ const PurchasedGames: React.FC = () => {
   return (
     <>
       <Box sx={{ padding: 1, backgroundColor: "rgb(236, 236, 237)" }}>
+        <Box sx={{ textAlign: "left", padding: 2, paddingBottom: 0 }}>
+          {" "}
+          <Typography variant="h4">Spelkvitton</Typography>
+        </Box>
+
         {userData.isLoggedIn ? (
           gameData.length > 0 ? (
             gameData.map((game) => <GameCard key={game.gameID} game={game} />)
