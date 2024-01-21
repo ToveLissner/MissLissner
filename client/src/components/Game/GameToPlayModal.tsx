@@ -7,13 +7,21 @@ import { RootState } from "../../domain/store";
 import { useDispatch } from "react-redux";
 import { updateGameAccountBalanceService } from "../../services/userService";
 import { setBalance } from "../../domain/slices/userSlice";
+import { GameType } from "../../models/GameType";
+import { createGameService } from "../../services/gameService";
+import { addGame } from "../../domain/slices/gameSlice";
 
 type GameToPlayModalProps = {
   open: boolean;
   onClose: () => void;
+  selectedGame: GameType;
 };
 
-const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
+const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
+  open,
+  onClose,
+  selectedGame,
+}) => {
   //   console.log("GameToPlayModal rendering...");
 
   const dispatch = useDispatch();
@@ -65,12 +73,20 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({ open, onClose }) => {
   };
 
   const handlePurchaseConfirm = async () => {
-    // här borde jag väl lägga in att vi skapar ett spel
-
     const newBalance = userBalance - parseFloat(customAmount);
-    try {
-      await updateGameAccountBalanceService(userID, newBalance);
 
+    try {
+      const createdGame = await createGameService({
+        price: parseFloat(customAmount),
+        gameTypeID: selectedGame.gameTypeID,
+        userID: userID,
+      });
+
+      dispatch(addGame(createdGame));
+
+      dispatch(setBalance(newBalance));
+
+      await updateGameAccountBalanceService(userID, newBalance);
       dispatch(setBalance(newBalance));
 
       onClose();

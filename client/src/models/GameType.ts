@@ -1,4 +1,4 @@
 export type GameType = {
-  gameTypeID?: number;
+  gameTypeID: number;
   gameType: string;
 };

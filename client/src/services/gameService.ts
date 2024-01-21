@@ -17,6 +17,38 @@ export const getAllGameTypesService = async (): Promise<GameType[]> => {
   }
 };
 
+// export const createGameService = async (): Promise<Game> => {
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}/games`);
+
+//     if (response.data.message === "Game created successfully") {
+//       return response.data.newGame;
+//     } else {
+//       console.error("Failed to create game:", response.data);
+//       throw new Error("Failed to create game");
+//     }
+//   } catch (error) {
+//     console.error("Failed to create game:", error);
+//     throw error;
+//   }
+// };
+
+export const createGameService = async (gameData: Game): Promise<Game> => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/games`, gameData);
+
+    if (response.data.message === "Game created successfully") {
+      return response.data.newGame;
+    } else {
+      console.error("Failed to create game:", response.data);
+      throw new Error("Failed to create game");
+    }
+  } catch (error) {
+    console.error("Failed to create game:", error);
+    throw error;
+  }
+};
+
 export const getAllGamesByUserIdService = async (
   userId: number
 ): Promise<Game[]> => {
