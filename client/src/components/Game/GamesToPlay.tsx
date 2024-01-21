@@ -136,6 +136,7 @@ const GamesToPlay: React.FC = () => {
       <GameToPlayModal
         open={isGameToPlayModalOpen}
         onClose={() => setGameToPlayModalOpen(false)}
+        selectedGame={selectedGame!}
       />
     </Box>
   );
