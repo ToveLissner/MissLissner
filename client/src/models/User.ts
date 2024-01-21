@@ -1,10 +1,10 @@
-// export type User = {
-//   userID: number;
-//   username: string;
-//   password: string;
-//   balance: number;
-//   isLoggedIn: boolean; // finns bara på frontend-sidan
-// };
+export type User = {
+  userID: number;
+  username: string;
+  password: string;
+  balance: number;
+  isLoggedIn: boolean; // finns bara på frontend-sidan
+};
 
 export type UserAllInfo = {
   user: {

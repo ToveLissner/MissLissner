@@ -21,6 +21,7 @@ const initialState: UserState = {
       password: "",
     },
     gameAccount: {
+      accountID: 0,
       balance: 0,
     },
     isLoggedIn: false,

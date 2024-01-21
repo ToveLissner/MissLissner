@@ -1,5 +1,5 @@
 import axios from "axios";
-import { UserAllInfo } from "../models/User";
+import { User, UserAllInfo } from "../models/User";
 
 const API_BASE_URL = "http://localhost:4440";
 
@@ -28,6 +28,8 @@ export const loginUserService = async (
       const userID = responseUser.userID;
 
       const balance = await getBalanceService(userID);
+
+      // const accountID = responseAll.gameAccount.accountID;
 
       return {
         user: {
@@ -74,8 +76,8 @@ export const getBalanceService = async (userID: number): Promise<number> => {
 
 // getAllUsers
 
-export const getAllUsersService = async (): Promise<UserAllInfo[]> => {
-  let response = await axios.get<UserAllInfo[]>(`${API_BASE_URL}/users`);
+export const getAllUsersService = async (): Promise<User[]> => {
+  let response = await axios.get<User[]>(`${API_BASE_URL}/users`);
 
   return response.data;
 };
@@ -85,12 +87,12 @@ export const getAllUsersService = async (): Promise<UserAllInfo[]> => {
 export const createUserService = async (
   username: string,
   password: string
-): Promise<UserAllInfo> => {
+): Promise<User> => {
   try {
     const allUsers = await getAllUsersService();
 
     const isUsernameTaken = allUsers.some(
-      (userData) => userData.user.username === username
+      (userData) => userData.username === username
     );
 
     if (isUsernameTaken) {
@@ -101,15 +103,16 @@ export const createUserService = async (
       password,
     });
 
-    const userData: UserAllInfo = response.data;
+    const userData: User = response.data;
 
-    const userID = userData.user.userID;
-    const accountID = userData.gameAccount.accountID;
+    const userID = userData.userID;
 
     if (response.data.message === "User created successfully") {
       return {
-        user: { userID, username, password },
-        gameAccount: { accountID, balance: 0 },
+        userID,
+        username,
+        password,
+        balance: 0,
         isLoggedIn: false,
       };
     } else {
