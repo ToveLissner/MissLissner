@@ -6,7 +6,11 @@ type GameCardProps = {
   game: Game;
 };
 
-const formatPurchaseDate = (purchaseDate: string): string => {
+const formatPurchaseDate = (purchaseDate?: string): string => {
+  if (!purchaseDate) {
+    return "N/A";
+  }
+
   const date = new Date(purchaseDate);
   const formattedDate = date.toLocaleDateString("sv-SE", {
     year: "numeric",
