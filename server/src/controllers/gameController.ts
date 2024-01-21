@@ -14,7 +14,10 @@ export const createGameController = async (req: Request, res: Response) => {
 
   try {
     const gameID = await createGame(newGame);
-    res.json({ message: `Game created successfully with ID: ${gameID}` });
+    res.json({
+      message: "Game created successfully",
+      newGame,
+    });
   } catch (error) {
     console.error(error);
     res.status(400).json({ error: "Failed to create game" });
