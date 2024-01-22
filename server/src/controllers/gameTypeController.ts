@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import {
   createGameType,
   getAllGameTypes,
-  getGameTypeByGameType,
+  // getGameTypeByGameType,
   updateGameType,
   deleteGameType,
+  getGameTypeByGameTypeId,
 } from "../db/db";
 import { IGameType } from "../models/IGameType";
 
@@ -34,14 +35,34 @@ export const getAllGameTypesController = async (
   }
 };
 
-export const getGameTypeByGameTypeController = async (
+// export const getGameTypeByGameTypeController = async (
+//   req: Request,
+//   res: Response
+// ) => {
+//   const gameType = req.params.gameType;
+
+//   try {
+//     const retrievedGameType = await getGameTypeByGameType(gameType);
+
+//     if (retrievedGameType) {
+//       res.json(retrievedGameType);
+//     } else {
+//       res.status(404).json({ error: "Game type not found" });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+export const getGameTypeByGameTypeIdController = async (
   req: Request,
   res: Response
 ) => {
-  const gameType = req.params.gameType;
+  const GameTypeID = parseInt(req.params.id, 10);
 
   try {
-    const retrievedGameType = await getGameTypeByGameType(gameType);
+    const retrievedGameType = await getGameTypeByGameTypeId(GameTypeID);
 
     if (retrievedGameType) {
       res.json(retrievedGameType);

@@ -303,17 +303,33 @@ export const getAllGameTypes = async (): Promise<IGameType[]> => {
   });
 };
 
-export const getGameTypeByGameType = async (
-  gameType: string
+// export const getGameTypeByGameType = async (
+//   gameType: string
+// ): Promise<IGameType | null> => {
+//   const sql = `SELECT * FROM game_types WHERE gameType = ?`;
+
+//   return new Promise<IGameType | null>((resolve, reject) => {
+//     db.get(sql, [gameType], (error, gameType: IGameType | null) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(gameType);
+//       }
+//     });
+//   });
+// };
+
+export const getGameTypeByGameTypeId = async (
+  gameTypeID: number
 ): Promise<IGameType | null> => {
-  const sql = `SELECT * FROM game_types WHERE gameType = ?`;
+  const sql = `SELECT * FROM game_types WHERE gameTypeID = ?`;
 
   return new Promise<IGameType | null>((resolve, reject) => {
-    db.get(sql, [gameType], (error, gameType: IGameType | null) => {
+    db.get(sql, [gameTypeID], (error, gameTypeID: IGameType | null) => {
       if (error) {
         reject(error);
       } else {
-        resolve(gameType);
+        resolve(gameTypeID);
       }
     });
   });
@@ -367,13 +383,13 @@ export const createGame = async (game: IGame) => {
   const sqlInsertGame = `INSERT INTO games (price, gameTypeID, userID) VALUES (?, ?, ?)`;
   const valuesInsertGame = [game.price, game.gameTypeID, game.userID];
 
-  return new Promise<number>((resolve, reject) => {
+  return new Promise<IGame>((resolve, reject) => {
     db.run(sqlInsertGame, valuesInsertGame, function (error) {
       if (error) {
         reject(error);
       } else {
         const gameID = this.lastID;
-        resolve(gameID);
+        resolve({ ...game, gameID });
       }
     });
   });

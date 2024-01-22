@@ -13,10 +13,10 @@ export const createGameController = async (req: Request, res: Response) => {
   const newGame = req.body as IGame;
 
   try {
-    const gameID = await createGame(newGame);
+    const game = await createGame(newGame);
     res.json({
       message: "Game created successfully",
-      newGame,
+      game,
     });
   } catch (error) {
     console.error(error);
