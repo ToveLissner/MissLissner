@@ -8,8 +8,13 @@ import { useDispatch } from "react-redux";
 import { updateGameAccountBalanceService } from "../../services/userService";
 import { setBalance } from "../../domain/slices/userSlice";
 import { GameType } from "../../models/GameType";
-import { createGameService } from "../../services/gameService";
+import {
+  createGameService,
+  getGameByIdService,
+} from "../../services/gameService";
 import { addGame } from "../../domain/slices/gameSlice";
+import PurchaseSuccessModal from "./PurchaseSuccessModal";
+import { Game } from "../../models/Game";
 
 type GameToPlayModalProps = {
   open: boolean;
@@ -22,36 +27,20 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
   onClose,
   selectedGame,
 }) => {
-  //   console.log("GameToPlayModal rendering...");
-
   const dispatch = useDispatch();
-  //   const userBalance = useSelector(
-  //     (state: RootState) => state.user.data.gameAccount.balance
-  //   );
-
-  const userData = useSelector((state: RootState) => state.user.data);
-
-  const userBalance = userData.gameAccount.balance;
-  const userID = userData.user.userID;
-
-  //   console.log("Redux Store userBalance:", userBalance);
 
   const [customAmount, setCustomAmount] = useState<string>("");
   const [amountSelected, setAmountSelected] = useState<boolean>(false);
   const [paymentText, setPaymentText] = useState<string>("Att betala: -");
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState<string>("");
-  //   const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
+  const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
+  const [createdGame, setCreatedGame] = useState<Game | null>(null); // Deklarera här
 
-  //   console.log(userBalance);
-  //   console.log("GameToPlayModal rendering with userBalance:", userBalance);
+  const userData = useSelector((state: RootState) => state.user.data);
 
-  //   useEffect(() => {
-  //     console.log(
-  //       "GameToPlayModal component updated with userBalance:",
-  //       userBalance
-  //     );
-  //   }, [userBalance]);
+  const userBalance = userData.gameAccount.balance;
+  const userID = userData.user.userID;
 
   const handleClose = () => {
     setCustomAmount("");
@@ -76,18 +65,32 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
     const newBalance = userBalance - parseFloat(customAmount);
 
     try {
-      const createdGame = await createGameService({
+      const gameData = {
         price: parseFloat(customAmount),
         gameTypeID: selectedGame.gameTypeID,
         userID: userID,
-      });
+      };
 
-      dispatch(addGame(createdGame));
+      const createdGame = await createGameService(gameData);
+      setCreatedGame(createdGame);
+
+      dispatch(addGame(createdGame)); // Ta inte bort - då uppdateras inte listan rätt verkar det som - kolla upp
+
+      if (createdGame.gameID !== undefined) {
+        const updatedGame = await getGameByIdService(createdGame.gameID);
+        console.log("hela: " + updatedGame.purchaseDate);
+
+        dispatch(addGame(updatedGame));
+
+        setCreatedGame(updatedGame);
+      }
 
       dispatch(setBalance(newBalance));
 
       await updateGameAccountBalanceService(userID, newBalance);
       dispatch(setBalance(newBalance));
+
+      setPurchaseSuccess(true);
 
       onClose();
     } catch (error) {
@@ -187,6 +190,14 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
           onClose={() => setDepositModalOpen(false)}
           initialAmount={depositAmount}
           gamePrice={parseFloat(customAmount)}
+        />
+      )}
+
+      {purchaseSuccess && createdGame && (
+        <PurchaseSuccessModal
+          open={purchaseSuccess}
+          onClose={() => setPurchaseSuccess(false)}
+          purchasedGame={createdGame}
         />
       )}
     </>
