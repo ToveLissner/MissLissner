@@ -29,13 +29,11 @@ const User: React.FC = () => {
 
   const balance = userData.gameAccount.balance;
 
-  console.log(userData);
-
   const gameData = useSelector(
     (state: { game: { games: Game[] } }) => state.game.games
   );
 
-  console.log(gameData);
+  // console.log(gameData);
 
   useEffect(() => {
     const fetchBalance = async () => {
