@@ -15,6 +15,7 @@ type CustomModalProps = {
   onButtonClick: () => void;
   isButtonDisabled?: boolean;
   buttonColor?: "primary" | "success";
+  width?: string;
 };
 
 const colorFromColors = colors;
@@ -31,6 +32,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
   isButtonDisabled,
   buttonColor,
   modalTitle,
+  width,
 }) => {
   return (
     <Modal
@@ -45,7 +47,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "340px",
+          width: width || "340px",
           bgcolor: "white",
           boxShadow: 3,
         }}
