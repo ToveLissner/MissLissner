@@ -8,8 +8,6 @@ export const getAllGameTypesService = async (): Promise<GameType[]> => {
   try {
     const response = await axios.get<GameType[]>(`${API_BASE_URL}/game-types`);
 
-    // console.log("Response from login API call:", response.data);
-
     return response.data;
   } catch (error) {
     console.error("Error fetching game types:", error);
@@ -17,28 +15,27 @@ export const getAllGameTypesService = async (): Promise<GameType[]> => {
   }
 };
 
-// export const createGameService = async (): Promise<Game> => {
-//   try {
-//     const response = await axios.post(`${API_BASE_URL}/games`);
-
-//     if (response.data.message === "Game created successfully") {
-//       return response.data.newGame;
-//     } else {
-//       console.error("Failed to create game:", response.data);
-//       throw new Error("Failed to create game");
-//     }
-//   } catch (error) {
-//     console.error("Failed to create game:", error);
-//     throw error;
-//   }
-// };
+export const getGameTypeByIdService = async (
+  gameTypeId: number
+): Promise<GameType> => {
+  try {
+    const response = await axios.get<GameType>(
+      `${API_BASE_URL}/game-types/${gameTypeId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching game type:", error);
+    throw error;
+  }
+};
 
 export const createGameService = async (gameData: Game): Promise<Game> => {
   try {
     const response = await axios.post(`${API_BASE_URL}/games`, gameData);
 
     if (response.data.message === "Game created successfully") {
-      return response.data.newGame;
+      const createdGame = response.data.game;
+      return createdGame;
     } else {
       console.error("Failed to create game:", response.data);
       throw new Error("Failed to create game");
@@ -57,11 +54,20 @@ export const getAllGamesByUserIdService = async (
       `${API_BASE_URL}/games/user/${userId}`
     );
 
-    // console.log("Response from getAllGamesByUserId API call:", response.data);
-
     return response.data;
   } catch (error) {
     console.error("Error fetching games by user ID:", error);
+    throw error;
+  }
+};
+
+export const getGameByIdService = async (gameId: number): Promise<Game> => {
+  try {
+    const response = await axios.get<Game>(`${API_BASE_URL}/games/${gameId}`);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching game by ID:", error);
     throw error;
   }
 };
