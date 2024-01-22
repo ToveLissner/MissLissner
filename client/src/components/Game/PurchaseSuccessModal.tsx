@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import { Game } from "../../models/Game";
 import GameCardDetailed from "./GameCardDetailed";
@@ -25,9 +25,13 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
         open={open}
         onClose={onClose}
         onConfirm={() => {}}
-        title="Bekräftelse"
+        title="Kvitto"
+        width="auto"
         content={
-          <Box>
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="h6" sx={{ marginBottom: "15px" }}>
+              Ditt spel är inlämnat
+            </Typography>
             <GameCardDetailed game={purchasedGame} />
           </Box>
         }
