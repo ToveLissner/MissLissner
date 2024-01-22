@@ -422,8 +422,22 @@ export const getAllGamesByUserId = async (userId: number): Promise<IGame[]> => {
   });
 };
 
+// export const getGameById = async (gameId: number): Promise<IGame | null> => {
+//   const sql = `SELECT * FROM games WHERE gameID = ?`;
+
+//   return new Promise<IGame | null>((resolve, reject) => {
+//     db.get(sql, [gameId], (error, game: IGame | null) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(game);
+//       }
+//     });
+//   });
+// };
+
 export const getGameById = async (gameId: number): Promise<IGame | null> => {
-  const sql = `SELECT * FROM games WHERE gameID = ?`;
+  const sql = `SELECT *, datetime(purchaseDate, 'localtime') as purchaseDate FROM games WHERE gameID = ?`;
 
   return new Promise<IGame | null>((resolve, reject) => {
     db.get(sql, [gameId], (error, game: IGame | null) => {
