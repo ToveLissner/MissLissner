@@ -71,7 +71,6 @@ const userSlice = createSlice({
       };
     },
     setBalance: (state, action: PayloadAction<number>) => {
-      console.log("Dispatching setBalance action with value:", action.payload);
       return {
         ...state,
         data: {
