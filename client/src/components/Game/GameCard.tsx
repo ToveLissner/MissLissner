@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Game } from "../../models/Game";
 import { Box, Typography } from "@mui/material";
+import { GameType } from "../../models/GameType";
+import { getGameTypeByIdService } from "../../services/gameService";
 
 type GameCardProps = {
   game: Game;
@@ -24,6 +26,20 @@ const formatPurchaseDate = (purchaseDate?: string): string => {
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game }) => {
+  const [gameType, setGameType] = useState<GameType | null>(null);
+
+  useEffect(() => {
+    const fetchGameType = async () => {
+      try {
+        const fetchedGameType = await getGameTypeByIdService(game.gameTypeID);
+        setGameType(fetchedGameType);
+      } catch (error) {
+        console.error("Error fetching game type:", error);
+      }
+    };
+
+    fetchGameType();
+  }, [game]);
   return (
     <Box
       sx={{
@@ -37,7 +53,10 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
       }}
     >
       <Box>
-        <Typography variant="body1">{`Speltyp: ${game.gameTypeID}`}</Typography>
+        <Typography variant="body1">
+          {" "}
+          {gameType && gameType.gameType.toUpperCase()}
+        </Typography>
       </Box>
       <Box sx={{ textAlign: "right", backgroundColor: "white" }}>
         <Typography variant="body2">{`Kostnad: ${game.price} kr`}</Typography>
@@ -51,3 +70,6 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
 };
 
 export default GameCard;
+
+// PurchasedPage är sidan där vi ska presentera listan med spelade spel,
+// PurchasedGames är listan med de spelade spelen och GameCard är ett spelat spel.
