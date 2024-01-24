@@ -76,6 +76,8 @@ const PurchasedGames: React.FC = () => {
         return now - gameTimestamp <= 7 * 24 * 60 * 60 * 1000; // En vecka i millisekunder
       case "day":
         return now - gameTimestamp <= 24 * 60 * 60 * 1000; // En dag i millisekunder
+      case "all":
+        return true;
       default:
         return true;
     }
@@ -113,8 +115,9 @@ const PurchasedGames: React.FC = () => {
           <MenuItem value="" disabled>
             Välj tidsintervall
           </MenuItem>
-          <MenuItem value="week">Senaste veckan</MenuItem>
           <MenuItem value="day">Senaste dygnet</MenuItem>
+          <MenuItem value="week">Senaste veckan</MenuItem>
+          <MenuItem value="all">Sedan start</MenuItem>
           {uniqueMonths.map((month) => (
             <MenuItem key={month} value={month}>
               {month}
