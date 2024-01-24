@@ -13,6 +13,10 @@ import GameCard from "./GameCard";
 
 const PAGE_SIZE = 8;
 
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 const PurchasedGames: React.FC = () => {
   const gameData = useSelector((state: RootState) => state.game.games);
   const userData = useSelector((state: RootState) => state.user.data);
@@ -31,7 +35,19 @@ const PurchasedGames: React.FC = () => {
     setSelectedTimePeriod(event.target.value);
   };
 
-  // Filtrera spel
+  const uniqueMonths = Array.from(
+    new Set(
+      gameData.map((game) =>
+        capitalizeFirstLetter(
+          new Intl.DateTimeFormat("sv-SE", {
+            month: "long",
+            year: "numeric",
+          }).format(new Date(game.purchaseDate || ""))
+        )
+      )
+    )
+  );
+
   const filteredGames = gameData.filter((game) => {
     const gameTimestamp = new Date(game.purchaseDate || "").getTime();
     const now = new Date().getTime();
@@ -41,9 +57,8 @@ const PurchasedGames: React.FC = () => {
         return now - gameTimestamp <= 7 * 24 * 60 * 60 * 1000; // En vecka i millisekunder
       case "day":
         return now - gameTimestamp <= 24 * 60 * 60 * 1000; // En dag i millisekunder
-      // Lägg till fler tidsperioder ??
       default:
-        return true; // Inga filter, visa alla spel
+        return true;
     }
   });
 
@@ -81,6 +96,11 @@ const PurchasedGames: React.FC = () => {
           </MenuItem>
           <MenuItem value="week">Senaste veckan</MenuItem>
           <MenuItem value="day">Senaste dygnet</MenuItem>
+          {uniqueMonths.map((month) => (
+            <MenuItem key={month} value={month}>
+              {month}
+            </MenuItem>
+          ))}
         </Select>
       </Box>
 
