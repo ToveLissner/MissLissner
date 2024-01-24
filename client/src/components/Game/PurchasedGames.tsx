@@ -24,7 +24,7 @@ const PurchasedGames: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("");
   const [sortOption, setSortOption] = useState<"gameType" | "purchaseDate">(
-    "gameType"
+    "purchaseDate"
   );
 
   const handlePageChange = (
@@ -140,8 +140,8 @@ const PurchasedGames: React.FC = () => {
           value={sortOption}
           onChange={(e) => handleSortChange(e.target.value as any)}
         >
-          <MenuItem value="gameType">Spelform</MenuItem>
           <MenuItem value="purchaseDate">Datum</MenuItem>
+          <MenuItem value="gameType">Spelform</MenuItem>
         </Select>
       </Box>
 
