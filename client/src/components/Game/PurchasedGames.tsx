@@ -4,7 +4,7 @@ import { RootState } from "../../domain/store";
 import { Box, Typography, Pagination } from "@mui/material";
 import GameCard from "./GameCard";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 8;
 
 const PurchasedGames: React.FC = () => {
   const gameData = useSelector((state: RootState) => state.game.games);
