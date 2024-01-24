@@ -23,6 +23,9 @@ const PurchasedGames: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("");
+  const [sortOption, setSortOption] = useState<"gameType" | "purchaseDate">(
+    "gameType"
+  );
 
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
@@ -33,6 +36,11 @@ const PurchasedGames: React.FC = () => {
 
   const handleTimePeriodChange = (event: SelectChangeEvent<string>) => {
     setSelectedTimePeriod(event.target.value);
+    setSortOption("gameType"); // Återställ sortering efter tidsintervall
+  };
+
+  const handleSortChange = (newSortOption: "gameType" | "purchaseDate") => {
+    setSortOption(newSortOption);
   };
 
   const uniqueMonths = Array.from(
@@ -48,7 +56,18 @@ const PurchasedGames: React.FC = () => {
     )
   );
 
-  const filteredGames = gameData.filter((game) => {
+  const sortedGames = [...gameData];
+  if (sortOption === "gameType") {
+    sortedGames.sort((a, b) => a.gameTypeID - b.gameTypeID);
+  } else if (sortOption === "purchaseDate") {
+    sortedGames.sort(
+      (a, b) =>
+        new Date(b.purchaseDate || "").getTime() -
+        new Date(a.purchaseDate || "").getTime()
+    );
+  }
+
+  const filteredGames = sortedGames.filter((game) => {
     const gameTimestamp = new Date(game.purchaseDate || "").getTime();
     const now = new Date().getTime();
 
@@ -101,6 +120,28 @@ const PurchasedGames: React.FC = () => {
               {month}
             </MenuItem>
           ))}
+        </Select>
+      </Box>
+
+      {/* Dropdown för sortering */}
+      <Box
+        sx={{
+          textAlign: "center",
+          marginTop: 2,
+          marginBottom: 2,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
+          Sortera efter:
+        </Typography>
+        <Select
+          value={sortOption}
+          onChange={(e) => handleSortChange(e.target.value as any)}
+        >
+          <MenuItem value="gameType">Spelform</MenuItem>
+          <MenuItem value="purchaseDate">Datum</MenuItem>
         </Select>
       </Box>
 
