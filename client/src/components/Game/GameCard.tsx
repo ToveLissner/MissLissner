@@ -40,6 +40,7 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
 
     fetchGameType();
   }, [game]);
+
   return (
     <Box
       sx={{
@@ -54,8 +55,7 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
     >
       <Box>
         <Typography variant="body1">
-          {" "}
-          {gameType && gameType.gameType.toUpperCase()}
+          {gameType ? gameType.gameType.toUpperCase() : "N/A"}
         </Typography>
       </Box>
       <Box sx={{ textAlign: "right", backgroundColor: "white" }}>
@@ -70,6 +70,3 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
 };
 
 export default GameCard;
-
-// PurchasedPage är sidan där vi ska presentera listan med spelade spel,
-// PurchasedGames är listan med de spelade spelen och GameCard är ett spelat spel.
