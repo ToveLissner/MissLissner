@@ -36,7 +36,6 @@ const PurchasedGames: React.FC = () => {
 
   const handleTimePeriodChange = (event: SelectChangeEvent<string>) => {
     setSelectedTimePeriod(event.target.value);
-    setSortOption("gameType"); // Återställ sortering efter tidsintervall
   };
 
   const handleSortChange = (newSortOption: "gameType" | "purchaseDate") => {
@@ -94,14 +93,22 @@ const PurchasedGames: React.FC = () => {
         <Typography variant="h4">Spelkvitton</Typography>
       </Box>
 
-      {/* Dropdown för tidsintervall */}
+      {/* Filtreringsrutan */}
       <Box
         sx={{
           textAlign: "center",
           marginTop: 2,
           marginBottom: 2,
           display: "flex",
+          alignItems: "center",
+
           justifyContent: "center",
+          "& .MuiSelect-select": {
+            backgroundColor: "white",
+          },
+          "& .MuiSelect-icon": {
+            color: "black",
+          },
         }}
       >
         <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
@@ -126,14 +133,21 @@ const PurchasedGames: React.FC = () => {
         </Select>
       </Box>
 
-      {/* Dropdown för sortering */}
+      {/* Sorteringsrutan */}
       <Box
         sx={{
           textAlign: "center",
           marginTop: 2,
           marginBottom: 2,
           display: "flex",
+          alignItems: "center",
           justifyContent: "center",
+          "& .MuiSelect-select": {
+            backgroundColor: "white",
+          },
+          "& .MuiSelect-icon": {
+            color: "black",
+          },
         }}
       >
         <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
