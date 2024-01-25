@@ -40,6 +40,12 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
     setError("");
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && !isButtonDisabled) {
+      handleLogIn();
+    }
+  };
+
   const handleLogIn = async () => {
     try {
       if (!username || !password) {
@@ -84,7 +90,6 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         onConfirm={() => {}}
         title="Logga in"
-        // modalTitle="Ange användarnamn och lösenord"
         content={
           <>
             <Typography sx={{ paddingBottom: 2 }}>
@@ -96,6 +101,7 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
               fullWidth
               value={username}
               onChange={handleInputUsername}
+              onKeyDown={handleKeyDown}
               sx={{ marginTop: 0 }}
             />
             <TextField
@@ -106,6 +112,7 @@ const LogInModal: React.FC<LogInModalProps> = ({ open, onClose }) => {
               value={password}
               onChange={handleInputPassword}
               margin="normal"
+              onKeyDown={handleKeyDown}
             />
             {error && (
               <Typography variant="body2" color="error" sx={{ mt: 1 }}>
