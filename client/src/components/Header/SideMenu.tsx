@@ -2,18 +2,20 @@ import React from "react";
 import {
   Drawer,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { Link } from "react-router-dom";
+
 import HomeIcon from "@mui/icons-material/Home";
 import InfoIcon from "@mui/icons-material/Info";
 import ContactSupportIcon from "@mui/icons-material/ContactSupport";
 
-interface SideMenuProps {
+type SideMenuProps = {
   open: boolean;
   onClose: () => void;
-}
+};
 
 const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
   return (
@@ -28,24 +30,24 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
       }}
     >
       <List>
-        <ListItem button>
+        <ListItemButton component={Link} to="/">
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary="Hem" />
-        </ListItem>
-        <ListItem button>
+        </ListItemButton>
+        <ListItemButton component={Link} to="/">
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="Om" />
-        </ListItem>
-        <ListItem button>
+        </ListItemButton>
+        <ListItemButton component={Link} to="/">
           <ListItemIcon>
             <ContactSupportIcon />
           </ListItemIcon>
           <ListItemText primary="Kontakt" />
-        </ListItem>
+        </ListItemButton>
       </List>
     </Drawer>
   );
