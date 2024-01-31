@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../../domain/slices/userSlice";
 import { Button } from "@mui/material";
+import logOutButtonStyles from "./styles/logOutButtonStyles";
 
 const LogOutButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const LogOutButton: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       <Button
         variant="outlined"
         onClick={handleLogout}
-        sx={{ mt: 1, textTransform: "none", width: "100%", height: "50px" }}
+        sx={logOutButtonStyles.button}
       >
         Logga ut
       </Button>
