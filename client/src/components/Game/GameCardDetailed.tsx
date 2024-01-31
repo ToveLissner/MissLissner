@@ -3,6 +3,7 @@ import { Box, Typography, CircularProgress, Grid } from "@mui/material";
 import { Game } from "../../models/Game";
 import { GameType } from "../../models/GameType";
 import { getGameTypeByIdService } from "../../services/gameService";
+import gameCardDetailedStyles from "./styles/gameCardDetailedStyles";
 
 // använd userID för att hämta username istället för id
 
@@ -65,16 +66,7 @@ const GameCardDetailed: React.FC<GameCardDetailedProps> = ({ game }) => {
   }
 
   return (
-    <Box
-      sx={{
-        width: "260px",
-        backgroundColor: "white",
-        borderRadius: "8px",
-        padding: "16px",
-        margin: "16px",
-        border: "2px solid #ccc",
-      }}
-    >
+    <Box sx={gameCardDetailedStyles.container}>
       <Grid container spacing={2}>
         {/* Vänster sida */}
         <Grid item xs={12} sm={6} sx={{ textAlign: "left" }}>
