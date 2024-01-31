@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Menu, MenuItem, Typography, Box, Button } from "@mui/material";
+import {
+  Avatar,
+  Menu,
+  MenuItem,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import { UserAllInfo } from "../../models/User";
 import LogInModal from "./LogInModal";
 import LogOutButton from "./LogOutButton";
@@ -9,6 +18,8 @@ import { RootState } from "../../domain/store";
 import DepositModal from "./DepositModal";
 import { getGamesByUserIdAsync } from "../../domain/slices/gameSlice";
 import { Link } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 type AppThunk = ThunkDispatch<RootState, null, Action<string>>;
 
@@ -16,6 +27,7 @@ const User: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
+  const [showBalance, setShowBalance] = useState(true);
 
   const dispatch = useDispatch<AppThunk>();
   const userData = useSelector(
@@ -67,9 +79,12 @@ const User: React.FC = () => {
     }
   };
 
+  const handleToggleBalance = () => {
+    setShowBalance(!showBalance);
+  };
+
   return (
     <>
-      {" "}
       {isDepositModalOpen && (
         <DepositModal
           open={isDepositModalOpen}
@@ -119,9 +134,22 @@ const User: React.FC = () => {
           }}
         >
           <Typography>{username}</Typography>
-          <Typography>{balance} kr</Typography>
 
-          {/* ska ha en knapp för uppdatering och för att se/inte se */}
+          <Stack direction="row" alignItems="center">
+            <IconButton onClick={handleToggleBalance}>
+              {showBalance ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </IconButton>
+            {showBalance ? (
+              <Typography>{balance} kr</Typography>
+            ) : (
+              <Typography
+                onClick={handleToggleBalance}
+                style={{ cursor: "pointer" }}
+              >
+                Visa saldo
+              </Typography>
+            )}
+          </Stack>
 
           <Button
             variant="contained"
@@ -149,7 +177,6 @@ const User: React.FC = () => {
               margin: "2px",
             }}
           >
-            {" "}
             <Link
               to="/spelkvitton"
               style={{ textDecoration: "none", color: "black" }}
