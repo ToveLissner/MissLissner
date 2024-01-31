@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../domain/store";
 import { updateGameAccountBalanceService } from "../../services/userService";
 import { setBalance } from "../../domain/slices/userSlice";
+import depositModalStyles from "./styles/depositModalStyles";
 
 type DepositModalProps = {
   open: boolean;
@@ -63,34 +64,29 @@ const DepositModal: React.FC<DepositModalProps> = ({
       content={
         <>
           {displayCostInfo && (
-            <Box
-              sx={{
-                paddingBottom: "25px",
-                borderBottom: "1px solid grey",
-              }}
-            >
+            <Box sx={depositModalStyles.costInfoBox}>
               <Typography variant="h6" sx={{ marginBottom: "14px" }}>
                 Ditt saldo är för lågt
               </Typography>
               <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography>Kostnad för spel:</Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography align="right">{gamePrice} kr</Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography>Ditt saldo:</Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography align="right">{userBalance} kr</Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography sx={{ marginBottom: "16px", fontWeight: "bold" }}>
                     Saknas:
                   </Typography>
                 </Grid>
-                <Grid item xs={6} sx={{ height: "30px" }}>
+                <Grid item xs={6} sx={depositModalStyles.costInfoGridItem}>
                   <Typography
                     sx={{ marginBottom: "16px", fontWeight: "bold" }}
                     align="right"
@@ -115,7 +111,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
               fullWidth
               value={depositAmount}
               onChange={handleDepositAmountChange}
-              sx={{ borderRadius: 0, mt: 1 }}
+              sx={depositModalStyles.amountTextField}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">kr</InputAdornment>
