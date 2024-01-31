@@ -3,6 +3,7 @@ import { Game } from "../../models/Game";
 import { Box, Typography } from "@mui/material";
 import { GameType } from "../../models/GameType";
 import { getGameTypeByIdService } from "../../services/gameService";
+import gameCardStyles from "./styles/gameCardStyles";
 
 type GameCardProps = {
   game: Game;
@@ -42,17 +43,7 @@ const GameCard: React.FC<GameCardProps> = ({ game }) => {
   }, [game]);
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "white",
-        borderRadius: "8px",
-        padding: "16px",
-        margin: "16px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
+    <Box sx={gameCardStyles.container}>
       <Box>
         <Typography variant="body1">
           {gameType ? gameType.gameType.toUpperCase() : "N/A"}
