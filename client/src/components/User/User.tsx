@@ -20,6 +20,7 @@ import { getGamesByUserIdAsync } from "../../domain/slices/gameSlice";
 import { Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import userStyles from "./styles/userStyles";
 
 type AppThunk = ThunkDispatch<RootState, null, Action<string>>;
 
@@ -92,10 +93,8 @@ const User: React.FC = () => {
         />
       )}
       <Box
-        display="flex"
-        alignItems="center"
         onClick={handleClick}
-        style={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
       >
         {isLoggedIn ? (
           <>
@@ -118,21 +117,10 @@ const User: React.FC = () => {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
         PaperProps={{
-          sx: {
-            backgroundColor: "white",
-            width: "300px",
-            height: "120vh",
-          },
+          sx: userStyles.menuPaper,
         }}
       >
-        <Box
-          sx={{
-            p: 1,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={userStyles.userInfoBox}>
           <Typography>{username}</Typography>
 
           <Stack direction="row" alignItems="center">
@@ -140,11 +128,13 @@ const User: React.FC = () => {
               {showBalance ? <VisibilityOffIcon /> : <VisibilityIcon />}
             </IconButton>
             {showBalance ? (
-              <Typography>{balance} kr</Typography>
+              <Typography sx={userStyles.balanceTypography}>
+                {balance} kr
+              </Typography>
             ) : (
               <Typography
                 onClick={handleToggleBalance}
-                style={{ cursor: "pointer" }}
+                sx={userStyles.balanceTypography}
               >
                 Visa saldo
               </Typography>
@@ -155,28 +145,17 @@ const User: React.FC = () => {
             variant="contained"
             color="success"
             onClick={() => setDepositModalOpen(true)}
-            sx={{
-              mt: 2,
-              textTransform: "none",
-              width: "100%",
-              height: "50px",
-            }}
+            sx={userStyles.depositButton}
           >
             Sätt in pengar
           </Button>
         </Box>
         <Box sx={{ backgroundColor: "rgb(236, 236, 237)" }}>
-          <Box sx={{ width: "100%", p: 1 }}>
+          <Box sx={userStyles.menuSection}>
             <Typography sx={{ color: "grey" }}>Mina spel</Typography>
           </Box>
 
-          <MenuItem
-            sx={{
-              paddingLeft: 1,
-              backgroundColor: "white",
-              margin: "2px",
-            }}
-          >
+          <MenuItem sx={userStyles.menuLink}>
             <Link
               to="/spelkvitton"
               style={{ textDecoration: "none", color: "black" }}
@@ -185,38 +164,13 @@ const User: React.FC = () => {
             </Link>
           </MenuItem>
 
-          <Box sx={{ width: "100%", p: 1 }}>
+          <Box sx={userStyles.menuSection}>
             <Typography sx={{ color: "grey" }}>Mitt konto</Typography>
           </Box>
-          <MenuItem
-            sx={{
-              paddingLeft: 1,
-              backgroundColor: "white",
-              margin: "2px",
-            }}
-          >
-            Mina pengar
-          </MenuItem>
+          <MenuItem sx={userStyles.menuLink}>Mina pengar</MenuItem>
 
-          <MenuItem
-            sx={{
-              paddingLeft: 1,
-              backgroundColor: "white",
-              margin: "2px",
-            }}
-          >
-            Kontoinställningar
-          </MenuItem>
-
-          <Box
-            sx={{
-              p: 1,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              backgroundColor: "white",
-            }}
-          >
+          <MenuItem sx={userStyles.menuLink}>Kontoinställningar</MenuItem>
+          <Box sx={userStyles.userInfoBox}>
             {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
           </Box>
         </Box>
