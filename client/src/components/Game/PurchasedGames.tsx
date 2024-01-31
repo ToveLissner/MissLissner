@@ -10,6 +10,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import GameCard from "./GameCard";
+import purchasedGamesStyles from "./styles/purchasedGamesStyles";
 
 const PAGE_SIZE = 8;
 
@@ -88,29 +89,13 @@ const PurchasedGames: React.FC = () => {
   );
 
   return (
-    <Box sx={{ padding: 1, backgroundColor: "rgb(236, 236, 237)" }}>
-      <Box sx={{ textAlign: "left", padding: 2, paddingBottom: 0 }}>
+    <Box sx={purchasedGamesStyles.container}>
+      <Box sx={purchasedGamesStyles.headerContainer}>
         <Typography variant="h4">Spelkvitton</Typography>
       </Box>
 
       {/* Filtreringsrutan */}
-      <Box
-        sx={{
-          textAlign: "center",
-          marginTop: 2,
-          marginBottom: 2,
-          display: "flex",
-          alignItems: "center",
-
-          justifyContent: "center",
-          "& .MuiSelect-select": {
-            backgroundColor: "white",
-          },
-          "& .MuiSelect-icon": {
-            color: "black",
-          },
-        }}
-      >
+      <Box sx={purchasedGamesStyles.filterBox}>
         <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
           Filtrera:
         </Typography>
@@ -134,22 +119,7 @@ const PurchasedGames: React.FC = () => {
       </Box>
 
       {/* Sorteringsrutan */}
-      <Box
-        sx={{
-          textAlign: "center",
-          marginTop: 2,
-          marginBottom: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          "& .MuiSelect-select": {
-            backgroundColor: "white",
-          },
-          "& .MuiSelect-icon": {
-            color: "black",
-          },
-        }}
-      >
+      <Box sx={purchasedGamesStyles.sortBox}>
         <Typography variant="subtitle1" sx={{ marginRight: 1 }}>
           Sortera efter:
         </Typography>
@@ -169,17 +139,7 @@ const PurchasedGames: React.FC = () => {
               <GameCard key={game.gameID} game={game} />
             ))
           ) : (
-            <Box
-              sx={{
-                backgroundColor: "white",
-                borderRadius: "8px",
-                padding: "16px",
-                margin: "16px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
+            <Box sx={purchasedGamesStyles.noPurchasedGamesBox}>
               <Typography>Inga kvitton hittades</Typography>
             </Box>
           )}
