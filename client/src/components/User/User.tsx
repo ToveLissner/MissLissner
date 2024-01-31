@@ -7,7 +7,6 @@ import LogOutButton from "./LogOutButton";
 import { Action, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../../domain/store";
 import DepositModal from "./DepositModal";
-import { Game } from "../../models/Game";
 import { getGamesByUserIdAsync } from "../../domain/slices/gameSlice";
 import { Link } from "react-router-dom";
 
@@ -28,12 +27,6 @@ const User: React.FC = () => {
   const username = userData.user.username;
 
   const balance = userData.gameAccount.balance;
-
-  const gameData = useSelector(
-    (state: { game: { games: Game[] } }) => state.game.games
-  );
-
-  // console.log(gameData);
 
   useEffect(() => {
     const fetchBalance = async () => {
