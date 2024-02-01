@@ -15,10 +15,6 @@ const PurchaseSuccessModal: React.FC<PurchaseSuccessModalProps> = ({
   onClose,
   purchasedGame,
 }) => {
-  console.log(purchasedGame);
-  console.log("date: " + purchasedGame.purchaseDate);
-  console.log("price: " + purchasedGame.price);
-
   return (
     <>
       <CustomModal

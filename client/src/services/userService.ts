@@ -15,21 +15,13 @@ export const loginUserService = async (
       password,
     });
 
-    // console.log("Response from login API call:", response.data);
-
     if (response.data.message === "Login successful") {
-      // console.log("Inloggningen lyckades!");
-
       const responseAll: UserAllInfo = response.data;
       const responseUser = responseAll.user;
-
-      // console.log("Response User:", responseUser);
 
       const userID = responseUser.userID;
 
       const balance = await getBalanceService(userID);
-
-      // const accountID = responseAll.gameAccount.accountID;
 
       return {
         user: {
@@ -41,11 +33,9 @@ export const loginUserService = async (
         isLoggedIn: true,
       };
     } else {
-      console.log("Inloggningen misslyckades!");
       throw new Error("Inloggningen misslyckades");
     }
   } catch (error) {
-    console.log("Något fel inträffade vid inloggning:", error);
     throw error;
   }
 };

@@ -78,7 +78,6 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
 
       if (createdGame.gameID !== undefined) {
         const updatedGame = await getGameByIdService(createdGame.gameID);
-        console.log("hela: " + updatedGame.purchaseDate);
 
         dispatch(addGame(updatedGame));
 
