@@ -41,7 +41,7 @@ export const getGameByIdController = async (req: Request, res: Response) => {
     const game = await getGameById(gameId);
 
     if (game) {
-      res.json(game);
+      res.json({ ...game });
     } else {
       res.status(404).json({ error: "Game not found" });
     }
