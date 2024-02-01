@@ -43,18 +43,16 @@ const PurchasedGames: React.FC = () => {
     setSortOption(newSortOption);
   };
 
-  const uniqueMonths = Array.from(
-    new Set(
-      gameData.map((game) =>
-        capitalizeFirstLetter(
-          new Intl.DateTimeFormat("sv-SE", {
-            month: "long",
-            year: "numeric",
-          }).format(new Date(game.purchaseDate || ""))
-        )
-      )
+  const formattedMonths = gameData.map((game) =>
+    capitalizeFirstLetter(
+      new Intl.DateTimeFormat("sv-SE", {
+        month: "long",
+        year: "numeric",
+      }).format(new Date(game.purchaseDate || ""))
     )
   );
+
+  const uniqueMonths = Array.from(new Set(formattedMonths));
 
   const sortedGames = [...gameData];
   if (sortOption === "gameType") {
@@ -68,18 +66,25 @@ const PurchasedGames: React.FC = () => {
   }
 
   const filteredGames = sortedGames.filter((game) => {
+    const formattedGameMonth = capitalizeFirstLetter(
+      new Intl.DateTimeFormat("sv-SE", {
+        month: "long",
+        year: "numeric",
+      }).format(new Date(game.purchaseDate || ""))
+    );
+
     const gameTimestamp = new Date(game.purchaseDate || "").getTime();
     const now = new Date().getTime();
 
     switch (selectedTimePeriod) {
       case "week":
-        return now - gameTimestamp <= 7 * 24 * 60 * 60 * 1000; // En vecka i millisekunder
+        return now - gameTimestamp <= 7 * 24 * 60 * 60 * 1000;
       case "day":
-        return now - gameTimestamp <= 24 * 60 * 60 * 1000; // En dag i millisekunder
+        return now - gameTimestamp <= 24 * 60 * 60 * 1000;
       case "all":
         return true;
       default:
-        return true;
+        return formattedGameMonth === selectedTimePeriod;
     }
   });
 
