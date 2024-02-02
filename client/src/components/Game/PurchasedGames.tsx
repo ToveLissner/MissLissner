@@ -23,7 +23,7 @@ const PurchasedGames: React.FC = () => {
   const userData = useSelector((state: RootState) => state.user.data);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("");
+  const [selectedTimePeriod, setSelectedTimePeriod] = useState<string>("week");
   const [sortOption, setSortOption] = useState<"gameType" | "purchaseDate">(
     "purchaseDate"
   );
