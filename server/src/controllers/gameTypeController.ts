@@ -35,26 +35,6 @@ export const getAllGameTypesController = async (
   }
 };
 
-// export const getGameTypeByGameTypeController = async (
-//   req: Request,
-//   res: Response
-// ) => {
-//   const gameType = req.params.gameType;
-
-//   try {
-//     const retrievedGameType = await getGameTypeByGameType(gameType);
-
-//     if (retrievedGameType) {
-//       res.json(retrievedGameType);
-//     } else {
-//       res.status(404).json({ error: "Game type not found" });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 export const getGameTypeByGameTypeIdController = async (
   req: Request,
   res: Response

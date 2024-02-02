@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import {
   createGameTypeController,
   getAllGameTypesController,
-  // getGameTypeByGameTypeController,
   getGameTypeByGameTypeIdController,
   updateGameTypeController,
   deleteGameTypeController,
@@ -14,7 +13,6 @@ router.use(bodyParser.json());
 
 router.post("/", createGameTypeController);
 router.get("/", getAllGameTypesController);
-// router.get("/game-type/:gameType", getGameTypeByGameTypeController);
 router.get("/:id", getGameTypeByGameTypeIdController);
 router.put("/:gameType", updateGameTypeController);
 router.delete("/:gameType", deleteGameTypeController);
