@@ -47,5 +47,5 @@ In addition to `yarn start`, you can use the following commands:
 
 Create a new account by clicking the "Öppna konto" button and follow the instructions, or use an existing user.
 
-**Username:** Tove
-**Password:** password
+- **Username:** Tove
+- **Password:** password
