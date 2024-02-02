@@ -12,7 +12,7 @@ Follow these steps to get started with backend development:
    cd server
    ```
 
-2. Create a .env file in the project root and add the following line to set the server port:
+2. **Create a .env file in the server directory and add the following line to set the server port:**
 
    PORT={yourChoiceOfPortNumber}
 
@@ -43,3 +43,4 @@ In addition to `yarn start`, you can use the following commands:
 
 - [Node.js](https://nodejs.org/en)
 - [Express](https://expressjs.com/)
+- [TypeScript](https://www.typescriptlang.org/)
