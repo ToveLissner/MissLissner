@@ -210,24 +210,6 @@ export const getGameAccountById = async (
   });
 };
 
-// export const updateGameAccountBalance = async (
-//   accountID: number,
-//   newBalance: number
-// ) => {
-//   const sql = `UPDATE game_accounts SET balance = ? WHERE accountID = ?`;
-//   const values = [newBalance, accountID];
-
-//   return new Promise<void>((resolve, reject) => {
-//     db.run(sql, values, (error) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve();
-//       }
-//     });
-//   });
-// };
-
 export const updateGameAccountBalance = async (
   userID: number,
   newBalance: number
@@ -302,22 +284,6 @@ export const getAllGameTypes = async (): Promise<IGameType[]> => {
     });
   });
 };
-
-// export const getGameTypeByGameType = async (
-//   gameType: string
-// ): Promise<IGameType | null> => {
-//   const sql = `SELECT * FROM game_types WHERE gameType = ?`;
-
-//   return new Promise<IGameType | null>((resolve, reject) => {
-//     db.get(sql, [gameType], (error, gameType: IGameType | null) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(gameType);
-//       }
-//     });
-//   });
-// };
 
 export const getGameTypeByGameTypeId = async (
   gameTypeID: number
@@ -422,20 +388,6 @@ export const getAllGamesByUserId = async (userId: number): Promise<IGame[]> => {
   });
 };
 
-// export const getGameById = async (gameId: number): Promise<IGame | null> => {
-//   const sql = `SELECT * FROM games WHERE gameID = ?`;
-
-//   return new Promise<IGame | null>((resolve, reject) => {
-//     db.get(sql, [gameId], (error, game: IGame | null) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(game);
-//       }
-//     });
-//   });
-// };
-
 export const getGameById = async (gameId: number): Promise<IGame | null> => {
   const sql = `SELECT *, datetime(purchaseDate, 'localtime') as purchaseDate FROM games WHERE gameID = ?`;
 
@@ -483,8 +435,6 @@ export const deleteGame = async (gameId: number) => {
     });
   });
 };
-
-// ska detta verkligen ligga i denna fil??? //
 
 // kontrollera användare och lösenord //
 
