@@ -40,3 +40,12 @@ In addition to `yarn start`, you can use the following commands:
 - [React](https://reactjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Material-UI](https://mui.com/): A popular React component library for building user interfaces with a set of customizable and accessible components.
+
+## How to Log In
+
+**To log in:**
+
+Create a new account by clicking the "Öppna konto" button and follow the instructions, or use an existing user.
+
+**Username:** Tove
+**Password:** password
