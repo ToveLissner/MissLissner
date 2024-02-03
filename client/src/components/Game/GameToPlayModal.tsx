@@ -35,7 +35,7 @@ const GameToPlayModal: React.FC<GameToPlayModalProps> = ({
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
   const [depositAmount, setDepositAmount] = useState<string>("");
   const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false);
-  const [createdGame, setCreatedGame] = useState<Game | null>(null); // Deklarera här
+  const [createdGame, setCreatedGame] = useState<Game | null>(null);
 
   const userData = useSelector((state: RootState) => state.user.data);
 

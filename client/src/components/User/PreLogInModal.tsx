@@ -28,7 +28,6 @@ const PreLogInModal: React.FC<PreLogInModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         onConfirm={() => {}}
         title="Du behöver logga in"
-        // modalTitle="Du behöver logga in"
         content={
           <Box>
             <Typography>

@@ -68,7 +68,6 @@ const GamesToPlay: React.FC = () => {
           >
             <Card
               elevation={4}
-              // style={{ height: "100%", cursor: "pointer" }}
               sx={{
                 cursor: "pointer",
                 backgroundColor: getColor(gameType),
