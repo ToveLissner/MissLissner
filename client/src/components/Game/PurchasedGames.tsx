@@ -12,7 +12,7 @@ import {
 import GameCard from "./GameCard";
 import purchasedGamesStyles from "./styles/purchasedGamesStyles";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 16;
 
 const capitalizeFirstLetter = (str: string) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
