@@ -28,7 +28,7 @@ const User: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDepositModalOpen, setDepositModalOpen] = useState(false);
-  const [showBalance, setShowBalance] = useState(true);
+  const [showBalance, setShowBalance] = useState(false);
 
   const dispatch = useDispatch<AppThunk>();
   const userData = useSelector(
@@ -83,6 +83,14 @@ const User: React.FC = () => {
   const handleToggleBalance = () => {
     setShowBalance(!showBalance);
   };
+
+  useEffect(() => {
+    const resetShowBalance = setTimeout(() => {
+      setShowBalance(false);
+    }, 30000);
+
+    return () => clearTimeout(resetShowBalance);
+  }, [showBalance]);
 
   return (
     <>
