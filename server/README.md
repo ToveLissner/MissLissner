@@ -32,6 +32,10 @@ This will run the server in development mode. The server will be accessible at [
 
 The server will automatically restart if you make edits.
 
+## Database Integration
+
+The backend interacts with an SQLite database using the `db.ts` file in the server directory.
+
 ## Additional Commands
 
 In addition to `yarn start`, you can use the following commands:
