@@ -167,9 +167,23 @@ const User: React.FC = () => {
           <Box sx={userStyles.menuSection}>
             <Typography sx={{ color: "grey" }}>Mitt konto</Typography>
           </Box>
-          <MenuItem sx={userStyles.menuLink}>Mina pengar</MenuItem>
+          <MenuItem sx={userStyles.menuLink}>
+            <Link
+              to="/minapengar"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              Mina pengar
+            </Link>
+          </MenuItem>
 
-          <MenuItem sx={userStyles.menuLink}>Kontoinställningar</MenuItem>
+          <MenuItem sx={userStyles.menuLink}>
+            <Link
+              to="/kontoinstallningar"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              Kontoinställningar
+            </Link>
+          </MenuItem>
           <Box sx={userStyles.userInfoBox}>
             {isLoggedIn && <LogOutButton onClick={handleMenuClose} />}
           </Box>
