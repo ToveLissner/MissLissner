@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import {
   createGameType,
   getAllGameTypes,
-  // getGameTypeByGameType,
   updateGameType,
   deleteGameType,
   getGameTypeByGameTypeId,
