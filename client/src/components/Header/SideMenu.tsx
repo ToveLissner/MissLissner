@@ -36,13 +36,13 @@ const SideMenu: React.FC<SideMenuProps> = ({ open, onClose }) => {
           </ListItemIcon>
           <ListItemText primary="Hem" />
         </ListItemButton>
-        <ListItemButton component={Link} to="/">
+        <ListItemButton component={Link} to="/about">
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
           <ListItemText primary="Om" />
         </ListItemButton>
-        <ListItemButton component={Link} to="/">
+        <ListItemButton component={Link} to="/contact">
           <ListItemIcon>
             <ContactSupportIcon />
           </ListItemIcon>
