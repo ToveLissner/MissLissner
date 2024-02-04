@@ -3,6 +3,7 @@ import { Box, TextField, Typography } from "@mui/material";
 import CustomModal from "../../ui-toolkit/components/CustomModal";
 import CustomSnackbar from "../../ui-toolkit/components/CustomSnackbar";
 import { createUserService } from "../../services/userService";
+import SuccessCreateAccountModal from "./SuccessCreateAccountModal";
 
 type SignUpModalProps = {
   open: boolean;
@@ -18,6 +19,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
     "success"
   );
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleInputUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(event.target.value);
@@ -44,6 +46,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 
       setSnackbarSeverity("success");
       setSnackbarMessage("Användaren har skapats framgångsrikt!");
+      setShowSuccessModal(true);
       setSnackbarOpen(true);
 
       onClose();
@@ -134,6 +137,12 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
         severity={snackbarSeverity}
         message={snackbarMessage}
       />
+      {showSuccessModal && (
+        <SuccessCreateAccountModal
+          open={true}
+          onClose={() => setShowSuccessModal(false)}
+        />
+      )}
     </>
   );
 };
