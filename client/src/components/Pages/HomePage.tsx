@@ -9,7 +9,7 @@ const HomePage: React.FC = () => {
       <HeroImage
         imageUrl={`${process.env.PUBLIC_URL}/images/3.jpeg`}
         title="För dig som vill vara med i spelet"
-        subtitle="- men gärna unviker jobbet"
+        subtitle="- men gärna undviker jobbet"
       />
       <GamesToPlay />
 
